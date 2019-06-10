@@ -27,7 +27,7 @@ class Word(object):
                     for j in range(len(inline)):
                         if begin_align<=position_at<begin_align+len(inline[j].text) :
                             offset_align=position_at-begin_align
-                            if letter.isupper():
+                            if letter.isupper() | letter.isdigit() :
                                 
                                 inline[j].text=inline[j].text[:offset_align]+inline[j].text[offset_align+1:]
                             break    

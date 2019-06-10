@@ -39,7 +39,7 @@ class Window(QWidget, Ui_Form):
         # call method with timeout
         self.tab.call_method('Page.navigate',url="http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr="+equipment, _timeout=2)
 	# wait for loading
-        self.tab.wait(2)
+        self.tab.wait(1)
 
         html = self.tab.Runtime.evaluate(expression="document.documentElement.outerHTML")
 

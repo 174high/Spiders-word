@@ -63,6 +63,14 @@ $ google-chrome --headless --disable-gpu --remote-debugging-port=9222
 python Remote-Monitoring-Platform.py
 
 -----------------------------------------------------------------------------------------------------
+genarate a ***.exe 
+
+
+pyinstaller --noconsole   Remote-Monitoring-Platform.py  //without a console 
+
+pyinstaller   Remote-Monitoring-Platform.py              //there is a console in programe to debug 
+  
+pyinstaller --noconsole  --ico="name .ico"  Remote-Monitoring-Platform.py  // creat an icon we need 
 
 
 
