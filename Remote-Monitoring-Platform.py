@@ -1,6 +1,8 @@
-﻿from PyQt5.QtCore import pyqtSlot, QIODevice, QByteArray
+﻿from PyQt5.QtCore import pyqtSlot, QIODevice, QByteArray 
 from PyQt5.QtSerialPort import QSerialPortInfo, QSerialPort
 from PyQt5.QtWidgets import QWidget, QMessageBox
+from PyQt5 import QtGui
+from PyQt5.QtCore import *
 
 import pychrome
 from bs4 import BeautifulSoup
@@ -19,9 +21,10 @@ class Window(QWidget, Ui_Form):
         super(Window, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
-        #self.timer = QTimer(self) 
-        #self.timer.timeout.connect(self.call_web) 
-        # self.timer.start(10000)    
+        self.switch=0
+        self.timer = QTimer(self) 
+        self.timer.timeout.connect(self.set_origin_pic) 
+        self.timer.start(100)    
 
 	# create a browser instance
         self.browser = pychrome.Browser(url="http://127.0.0.1:9222")
@@ -33,6 +36,7 @@ class Window(QWidget, Ui_Form):
         self.tab.Network.enable()
 
         self.pushButton.clicked.connect(self.get_equipment)
+        self.pushButton_2.clicked.connect(self.search)
 
     def call_web(self,equipment):
 
@@ -66,7 +70,32 @@ class Window(QWidget, Ui_Form):
         equipment = self.textEdit.toPlainText()
         print(equipment)
         self.call_web(equipment)
-         
+          
+    def set_origin_pic(self):
+        pic=QtGui.QPixmap(":/qrc/china.PNG")
+        pic=pic.scaled(QSize(800,450),Qt.KeepAspectRatio)
+        self.label.setPixmap(pic)      
+        self.timer.stop()  
+
+    def search(self):
+
+        if self.switch==0 :
+            pic1=QtGui.QPixmap(":/qrc/shanghai.PNG")
+            pic1=pic1.scaled(QSize(800,450),Qt.KeepAspectRatio)
+            self.label.setPixmap(pic1)
+            self.switch=1
+        elif self.switch==1 :
+            pic1=QtGui.QPixmap(":/qrc/detail.PNG")
+            pic1=pic1.scaled(QSize(800,450),Qt.KeepAspectRatio);
+            self.label.setPixmap(pic1)
+            self.switch=2
+        elif self.switch==2 :
+            pic1=QtGui.QPixmap(":/qrc/china.PNG")
+            pic1=pic1.scaled(QSize(800,450),Qt.KeepAspectRatio)
+            self.label.setPixmap(pic1)
+            self.switch=0 
+   
+
 
 def signal_handler(signal,frame):
     print('You pressed Ctrl+C!')
@@ -82,6 +111,7 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     w = Window()
+    w.setFixedSize(850,600)
     signal.signal(signal.SIGINT,signal_handler)
     w.show()
     sys.exit(app.exec_())

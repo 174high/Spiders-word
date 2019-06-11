@@ -32,7 +32,7 @@ virtualenv --system-site-packages -p python ./venv
 ui-FormMonitor.ui
 
 3. 再使用pyuic5把 ui转化为 py 程序。  
-pyuic5 - o 目标文件名.py 源文件名.ui  
+pyuic5 -o  Ui-FormMonitor.py  Ui-FormMonitor.ui 
 
 4. python  Ui_FormMonitor.py 可以看到生成的效果(需要添加 main 函数)
 
