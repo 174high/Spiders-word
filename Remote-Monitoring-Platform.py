@@ -3,6 +3,7 @@ from PyQt5.QtSerialPort import QSerialPortInfo, QSerialPort
 from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5 import QtGui
 from PyQt5.QtCore import *
+from PyQt5.QtWebEngineWidgets import *
 
 import pychrome
 from bs4 import BeautifulSoup
@@ -34,6 +35,12 @@ class Window(QWidget, Ui_Form):
         self.tab.start()
         # call method
         self.tab.Network.enable()
+
+        self.browser = QWebEngineView()
+        url = 'https://www.baidu.com'
+        self.browser.load(QUrl(url))
+        
+        self.gridLayout_5.addWidget(self.browser)
 
         self.pushButton.clicked.connect(self.get_equipment)
         self.pushButton_2.clicked.connect(self.search)
