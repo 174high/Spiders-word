@@ -11,6 +11,7 @@ import requests
 
 import docx
 import signal
+import os
 
 from Ui_FormMonitor import Ui_Form 
 from change_paragraph import Word 
@@ -37,9 +38,12 @@ class Window(QWidget, Ui_Form):
         self.tab.Network.enable()
 
         self.browser = QWebEngineView()
-        url = 'https://www.baidu.com'
+#        url = 'https://map.baidu.com/search/%E6%98%9F%E5%B7%B4%E5%85%8B/@11671891.22,4104027.879999999,4.86z?querytype=s&c=1&wd=%E6%98%9F%E5%B7%B4%E5%85%8B&da_src=shareurl&on_gel=1&l=4&gr=1&b=(5928478.313716695,1388781.7288436913;17509054.96313347,6618135.872095954)&pn=0&device_ratio=2'
+        url="http://localhost:8080/"
         self.browser.load(QUrl(url))
-        
+#        self.browser.load(QUrl.fromLocalFile(
+#        os.path.abspath('data/map_vue.html')))        
+
         self.gridLayout_5.addWidget(self.browser)
 
         self.pushButton.clicked.connect(self.get_equipment)
