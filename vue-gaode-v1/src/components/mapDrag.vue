@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   描述：拖放地图组件，默认尺寸是 500 * 300
 
   接收属性参数：
@@ -13,11 +13,6 @@
 -->
 <template>
   <div class="m-map">
-    <div class="search" v-if="placeSearch">
-      <input type="text" placeholder="请输入关键字" v-model="searchKey">
-      <button type="button" @click="handleSearch">搜索</button>
-      <div id="js-result" v-show="searchKey" class="result"></div>
-    </div>
     <div id="js-container" class="map">正在加载数据 ...</div>
   </div>
 </template>
@@ -117,8 +112,4 @@ export default {
 <style lang="css">
 .m-map{ min-width: 500px; min-height: 300px; position: relative; }
 .m-map .map{ width: 100%; height: 100%; }
-.m-map .search{ position: absolute; top: 10px; left: 10px; width: 285px; z-index: 1; }
-.m-map .search input{ width: 180px; border: 1px solid #ccc; line-height: 20px; padding: 5px; outline: none; }
-.m-map .search button{ line-height: 26px; background: #fff; border: 1px solid #ccc; width: 50px; text-align: center; }
-.m-map .result{ max-height: 300px; overflow: auto; margin-top: 10px; }
 </style>
