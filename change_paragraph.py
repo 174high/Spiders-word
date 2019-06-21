@@ -38,10 +38,38 @@ class Word(object):
                 begin=begin+len(inline[i].text)
         return paragraph
 
+    def input_table_data(data,value,maximum):  
 
+        count=1 
+        value_fill=False 
+        doc = docx.Document('Field Problem Feedback-Template.docx')
+        for table in doc.tables:  # 遍历所有表格
+            if count>maximum:            
+                break
+            count=count+1  
+          
+            print ('----table------')
+            for row in table.rows:  # 遍历表格的所有行
+                # row_str = '\t'.join([cell.text for cell in row.cells])  # 一行数据
+                # print row_str
+                for cell in row.cells:
+                    print(cell.text, '\t')
+                    if value_fill==True:                   
+                       cell.text=value
+                       doc.save('tmp.docx')
+                       return                       
+
+                    if cell.text==data: 
+                          value_fill=True  
+        doc.save('tmp.docx')        
 
 if __name__ == "__main__":
 
+    word=Word
+    word.input_table_data("City","beijing",4)
+
+
+'''
     doc = docx.Document('Field Problem Feedback-Template.docx')
 
     for j in  doc.paragraphs:
@@ -78,7 +106,7 @@ if __name__ == "__main__":
         print("number=",num)
         #break
 
-
+'''
 
 
 

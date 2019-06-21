@@ -9,6 +9,7 @@ import pychrome
 from bs4 import BeautifulSoup
 import requests
 
+import datetime
 import docx
 import signal
 import os
@@ -68,11 +69,46 @@ class Window(QWidget, Ui_Form):
 
         doc = docx.Document('Field Problem Feedback-Template.docx')
 
-        data="Product line ："
+        data="Originator: "
+        doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,"JOHNNY")
 
-        word_Product_Line=Word
-        doc.paragraphs[1]=word_Product_Line.input_data(doc.paragraphs[1],data,(soup.select("#ProductLineDesc"))[0]['value'])
-        
+        data="Entry Date："
+        doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+        data="Phone/Mail:"
+        doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,(soup.select("#TaPhoneNumber"))[0]['value'])
+
+        data="Product line ："        
+        doc.paragraphs[1]=Word.input_data(doc.paragraphs[1],data,(soup.select("#ProductLineDesc"))[0]['value'])
+
+        data="Zone: "
+        doc.paragraphs[1]=Word.input_data(doc.paragraphs[1],data,"N/A")
+
+        data="Clams / PROCITS / PROMs Nr："
+        doc.paragraphs[1]=Word.input_data(doc.paragraphs[1],data,"N/A")
+
+        data="Commission No："
+        doc.paragraphs[2]=Word.input_data(doc.paragraphs[2],data,(soup.select("#CommisionNumber"))[0]['value'])
+
+        data="Handover to EI: "
+        doc.paragraphs[2]=Word.input_data(doc.paragraphs[2],data,"N/A")
+
+        data="Maintenance by Schindler："
+        doc.paragraphs[2]=Word.input_data(doc.paragraphs[2],data,"N/A")
+
+        data="Affected Component："
+        doc.paragraphs[3]=Word.input_data(doc.paragraphs[3],data,"N/A") 
+
+        data="Number of Units："
+        doc.paragraphs[3]=Word.input_data(doc.paragraphs[3],data,"N/A") 
+
+        data="Other product line affected: "
+        doc.paragraphs[3]=Word.input_data(doc.paragraphs[3],data,"N/A") 
+       
+   
+   
+
+
         doc.save('Feedback.docx')
 
         # stop the tab (stop handle events and stop recv message from chrome)
