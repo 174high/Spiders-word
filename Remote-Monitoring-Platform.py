@@ -105,11 +105,43 @@ class Window(QWidget, Ui_Form):
         data="Other product line affected: "
         doc.paragraphs[3]=Word.input_data(doc.paragraphs[3],data,"N/A") 
        
-   
-   
+        doc=Word.input_table_data(doc,"City","beijing",4)
 
+#        doc=Word.input_table_data(doc,"Machine Type",(soup.select("#Machine type"))[0]['value'],4)
 
         doc.save('Feedback.docx')
+
+        doc = docx.Document('rmp info-Template.docx')
+        doc=Word.input_table_data(doc,"Equipment #",(soup.select("#Equnr"))[0]['value'],4) 
+        doc=Word.input_table_data(doc,"Product Line",(soup.select("#ProductLineDesc"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Address",(soup.select("#Address"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"City",(soup.select("#CityAndZip"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"CompanyCode",(soup.select("#BukrsDesc"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Controller Type",(soup.select("#ControllerTypeSwVersion"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Gateway Type",(soup.select("#GatewayType"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Serial Number",(soup.select("#SerialNumber"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"TM SW Version",(soup.select("#TmSwVersion"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"TM State",(soup.select("#TmState"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Environment",(soup.select("#Environment"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Drive Type",(soup.select("#DriveType"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Door Type",(soup.select("#DoorType"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Machine Type",(soup.select("#MachineType"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Workcenter",(soup.select("#Workcenter"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Branch",(soup.select("#Branch"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Commission #",(soup.select("#CommisionNumber"))[0]['value'],4)
+        doc=Word.input_table_data(doc,"Equipment Title",(soup.select("#Description"))[0]['value'],4)
+
+
+        data="Originator: "
+        doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,"JOHNNY")
+
+        data="Entry Date："
+        doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+        data="Phone/Mail:"
+        doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,(soup.select("#TaPhoneNumber"))[0]['value'])
+
+        doc.save('rmp info-result.docx')
 
         # stop the tab (stop handle events and stop recv message from chrome)
 

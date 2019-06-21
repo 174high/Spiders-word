@@ -38,11 +38,10 @@ class Word(object):
                 begin=begin+len(inline[i].text)
         return paragraph
 
-    def input_table_data(data,value,maximum):  
+    def input_table_data(doc,data,value,maximum):  
 
         count=1 
         value_fill=False 
-        doc = docx.Document('Field Problem Feedback-Template.docx')
         for table in doc.tables:  # 遍历所有表格
             if count>maximum:            
                 break
@@ -56,17 +55,17 @@ class Word(object):
                     print(cell.text, '\t')
                     if value_fill==True:                   
                        cell.text=value
-                       doc.save('tmp.docx')
-                       return                       
+                       return doc                      
 
                     if cell.text==data: 
-                          value_fill=True  
-        doc.save('tmp.docx')        
+                          value_fill=True    
+        return doc    
 
 if __name__ == "__main__":
 
+    doc = docx.Document('Field Problem Feedback-Template.docx')
     word=Word
-    word.input_table_data("City","beijing",4)
+    word.input_table_data(doc,"City","beijing",4)
 
 
 '''
