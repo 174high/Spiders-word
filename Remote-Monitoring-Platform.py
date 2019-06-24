@@ -8,6 +8,7 @@ from PyQt5.QtWebEngineWidgets import *
 import pychrome
 from bs4 import BeautifulSoup
 import requests
+import re
 
 import datetime
 import docx
@@ -29,15 +30,6 @@ class Window(QWidget, Ui_Form):
         self.timer.timeout.connect(self.set_origin_pic) 
         self.timer.start(100)    
 
-	# create a browser instance
-        self.browser = pychrome.Browser(url="http://127.0.0.1:9222")
-	# create a tab'
-        self.tab = self.browser.new_tab()
-	# start the tab 
-        self.tab.start()
-        # call method
-        self.tab.Network.enable()
-
         self.browser = QWebEngineView()
 #        url = 'https://map.baidu.com/search/%E6%98%9F%E5%B7%B4%E5%85%8B/@11671891.22,4104027.879999999,4.86z?querytype=s&c=1&wd=%E6%98%9F%E5%B7%B4%E5%85%8B&da_src=shareurl&on_gel=1&l=4&gr=1&b=(5928478.313716695,1388781.7288436913;17509054.96313347,6618135.872095954)&pn=0&device_ratio=2'
         url="http://localhost:8080/"
@@ -52,6 +44,15 @@ class Window(QWidget, Ui_Form):
 
     def call_web(self,equipment):
 
+	# create a browser instance
+        self.browser = pychrome.Browser(url="http://127.0.0.1:9221")
+	# create a tab'
+        self.tab = self.browser.new_tab()
+	# start the tab 
+        self.tab.start()
+        # call method
+        self.tab.Network.enable()
+
         # call method with timeout
         self.tab.call_method('Page.navigate',url="http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr="+equipment, _timeout=2)
 	# wait for loading
@@ -60,6 +61,8 @@ class Window(QWidget, Ui_Form):
         html = self.tab.Runtime.evaluate(expression="document.documentElement.outerHTML")
 
         soup = BeautifulSoup(((html['result'])['value']),"html.parser")
+ 
+        print(soup.prettify())
 
         #print(soup)
         print(soup.select("#ProductLineDesc"))
@@ -71,40 +74,28 @@ class Window(QWidget, Ui_Form):
 
         data="Originator: "
         doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,"JOHNNY")
-
         data="Entry Date："
         doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
         data="Phone/Mail:"
         doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,(soup.select("#TaPhoneNumber"))[0]['value'])
-
         data="Product line ："        
         doc.paragraphs[1]=Word.input_data(doc.paragraphs[1],data,(soup.select("#ProductLineDesc"))[0]['value'])
-
         data="Zone: "
         doc.paragraphs[1]=Word.input_data(doc.paragraphs[1],data,"N/A")
-
         data="Clams / PROCITS / PROMs Nr："
         doc.paragraphs[1]=Word.input_data(doc.paragraphs[1],data,"N/A")
-
         data="Commission No："
         doc.paragraphs[2]=Word.input_data(doc.paragraphs[2],data,(soup.select("#CommisionNumber"))[0]['value'])
-
         data="Handover to EI: "
         doc.paragraphs[2]=Word.input_data(doc.paragraphs[2],data,"N/A")
-
         data="Maintenance by Schindler："
         doc.paragraphs[2]=Word.input_data(doc.paragraphs[2],data,"N/A")
-
         data="Affected Component："
         doc.paragraphs[3]=Word.input_data(doc.paragraphs[3],data,"N/A") 
-
         data="Number of Units："
         doc.paragraphs[3]=Word.input_data(doc.paragraphs[3],data,"N/A") 
-
         data="Other product line affected: "
         doc.paragraphs[3]=Word.input_data(doc.paragraphs[3],data,"N/A") 
-       
         doc=Word.input_table_data(doc,"City","beijing",4)
 
 #        doc=Word.input_table_data(doc,"Machine Type",(soup.select("#Machine type"))[0]['value'],4)
@@ -131,24 +122,63 @@ class Window(QWidget, Ui_Form):
         doc=Word.input_table_data(doc,"Commission #",(soup.select("#CommisionNumber"))[0]['value'],4)
         doc=Word.input_table_data(doc,"Equipment Title",(soup.select("#Description"))[0]['value'],4)
 
-
         data="Originator: "
         doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,"JOHNNY")
-
         data="Entry Date："
         doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
         data="Phone/Mail:"
         doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,(soup.select("#TaPhoneNumber"))[0]['value'])
-
         doc.save('rmp info-result.docx')
 
         # stop the tab (stop handle events and stop recv message from chrome)
+        self.tab.stop()
+        self.browser.close_tab(self.tab)
+
+#    def request_will_be_sent(**kwargs):
+#        print("loading: %s" % kwargs.get('request').get('url'))
+
+    def watch_list(self):
+
+        # create a browser instance
+        browser = pychrome.Browser(url="http://127.0.0.1:9225")
+        # create a tab
+        tab = browser.new_tab()
+        # start the tab 
+        tab.start()
+        # call method
+        tab.Network.enable()
+        # call method with timeout
+        #tab.Page.navigate(url="http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr=10000021", _timeout=1)
+        tab.call_method('Page.navigate',url="http://rmp.global.schindler.com/Monitoring/WatchList", _timeout=1)
+        # wait for loading
+        tab.wait(2)
+        html = tab.Runtime.evaluate(expression="document.documentElement.outerHTML")
+        soup = BeautifulSoup(((html['result'])['value']),"html.parser")
+
+        for link in soup.find_all(class_="k-item",role="option"):
+            print(link)
+
+        #print(soup)
+#        print((soup.select("#http://rmp.global.schindler.com/Equipment/EquipmentMain"))[0]['value'])
+        print(soup.title)
+
+        for link in soup.find_all('a'):
+            if link.get('href').find("equnr=") > 0 :
+                print(link.get('href')[link.get('href').find("equnr=")+6:])
+
+
+        # stop the tab (stop handle events and stop recv message from chrome)
+        tab.stop()
+
+        # close tab
+        browser.close_tab(tab)
 
     def get_equipment(self):
         equipment = self.textEdit.toPlainText()
         print(equipment)
-        self.call_web(equipment)
+        self.watch_list()
+#        self.call_web(equipment)
+
           
     def set_origin_pic(self):
         pic=QtGui.QPixmap(":/qrc/china.PNG")
