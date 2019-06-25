@@ -140,7 +140,7 @@ class Window(QWidget, Ui_Form):
     def watch_list(self):
 
         # create a browser instance
-        browser = pychrome.Browser(url="http://127.0.0.1:9225")
+        browser = pychrome.Browser(url="http://127.0.0.1:9227")
         # create a tab
         tab = browser.new_tab()
         # start the tab 
@@ -155,6 +155,9 @@ class Window(QWidget, Ui_Form):
         html = tab.Runtime.evaluate(expression="document.documentElement.outerHTML")
         soup = BeautifulSoup(((html['result'])['value']),"html.parser")
 
+        for link in soup.find_all(class_="k-list-optionlabel k-state-selected k-state-focused"):
+            print(link)
+
         for link in soup.find_all(class_="k-item",role="option"):
             print(link)
 
@@ -164,8 +167,8 @@ class Window(QWidget, Ui_Form):
 
         for link in soup.find_all('a'):
             if link.get('href').find("equnr=") > 0 :
-                print(link.get('href')[link.get('href').find("equnr=")+6:])
-
+#                print(link.get('href')[link.get('href').find("equnr=")+6:])
+                 print(link)
 
         # stop the tab (stop handle events and stop recv message from chrome)
         tab.stop()
