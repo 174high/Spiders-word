@@ -13,6 +13,11 @@
 -->
 <template>
   <div class="m-map">
+    <div class="search" v-if="placeSearch">
+      <input type="text" placeholder="请输入关键字" v-model="searchKey">
+      <button type="button" @click="handleSearch">搜索</button>
+      <div id="js-result" v-show="searchKey" class="result"></div>
+    </div>
     <div id="js-container" class="map">正在加载数据 ...</div>
   </div>
 </template>
@@ -52,22 +57,23 @@ export default {
       let AMap = this.AMap = window.AMap
       AMapUI.loadUI(['misc/PositionPicker'], PositionPicker => {
         let mapConfig = {
-          zoom: 16,
+          zoom: 3,
           cityName: MapCityName
         }
         if (this.lat && this.lng) {
-          mapConfig.center = [this.lng, this.lat]
+              mapConfig.center = [this.lng, this.lat]
+ //           mapConfig.center = [102, 33]
         }
         let map = new AMap.Map('js-container', mapConfig)
         // 加载地图搜索插件
         AMap.service('AMap.PlaceSearch', () => {
           this.placeSearch = new AMap.PlaceSearch({
-            pageSize: 5,
+            pageSize: 1,
             pageIndex: 1,
             citylimit: true,
             city: MapCityName,
             map: map,
-            panel: 'js-result'
+            //panel: 'js-result'
           })
         })
         // 启用工具条
@@ -112,4 +118,8 @@ export default {
 <style lang="css">
 .m-map{ min-width: 500px; min-height: 300px; position: relative; }
 .m-map .map{ width: 100%; height: 100%; }
+.m-map .search{ position: absolute; top: 10px; left: 10px; width: 285px; z-index: 1; }
+.m-map .search input{ width: 180px; border: 1px solid #ccc; line-height: 20px; padding: 5px; outline: none; }
+.m-map .search button{ line-height: 26px; background: #fff; border: 1px solid #ccc; width: 50px; text-align: center; }
+.m-map .result{ max-height: 300px; overflow: auto; margin-top: 10px; }
 </style>

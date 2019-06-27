@@ -3,6 +3,23 @@
     <div class="g-wraper" v-hljs>
       <div class="m-part">
         <h3 class="title">Watch List </h3>
+        <select>
+          <option value="All units">All units</option>
+          <option value="BIC5 (EU) release 2">BIC5 (EU) release 2</option>
+          <option value="BIC5 (EU) release 4 and higher">BIC5 (EU) release 4 and higher</option>
+          <option value="BIC7 (EU) release 1 and higher">BIC7 (EU) release 1 and higher</option>
+          <option value="IoEE Cube Test Equipments">IoEE Cube Test Equipments</option>
+          <option value="MX7 (EU)">MX7 (EU)</option>
+          <option value="MX7 (EU) release 2">MX7 (EU) release 2</option>
+          <option value="S2X00/5400/Eurolift">S2X00/5400/Eurolift</option>
+          <option value="S3X00/5300">S3X00/5300</option>
+          <option value="S5500">S5500</option>
+          <option value="S6200">S6200</option>
+          <option value="S6300">S6300</option>
+          <option value="Schindler Direct Units">Schindler Direct Units</option>
+          <option value="Service Contract Active">Service Contract Active</option>
+          <option value="SMART">SMART</option>
+        </select>
         <!-- <h4 class="title">Select Portfolio</h4> -->
         <mapDrag @drag="dragMap" class="mapbox"></mapDrag>
         <ul class="info">
@@ -37,6 +54,7 @@ export default {
       }
     }
   },
+
   methods: {
     dragMap (data) {
       this.dragData = {
@@ -49,6 +67,7 @@ export default {
       }
     }
   }
+
 }
 </script>
 
