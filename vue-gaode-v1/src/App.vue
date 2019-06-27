@@ -2,7 +2,9 @@
   <div id="app">
     <div class="g-wraper" v-hljs>
       <div class="m-part">
-        <h3 class="title">Watch List </h3>
+        <!--<h3 class="title">Watch List </h3> -->
+        <ul  class="watchlist">Watch List </ul >
+        <ul class="list">        
         <select>
           <option value="All units">All units</option>
           <option value="BIC5 (EU) release 2">BIC5 (EU) release 2</option>
@@ -20,6 +22,7 @@
           <option value="Service Contract Active">Service Contract Active</option>
           <option value="SMART">SMART</option>
         </select>
+        </ul>
         <!-- <h4 class="title">Select Portfolio</h4> -->
         <mapDrag @drag="dragMap" class="mapbox"></mapDrag>
         <ul class="info">
@@ -89,6 +92,8 @@ body{ margin: 0; }
 .m-part .title{ font-size: 30px; line-height: 60px; margin-bottom: 10px; color: #333; }
 .m-part .mapbox{ width: 600px; height: 400px; margin-bottom: 20px; float: left; }
 .m-part .info{ margin: 0; padding: 0; list-style: none; line-height: 30px; margin-left: 620px; }
+.m-part .watchlist{ margin: 0; padding: 0; list-style: none; line-height: 30px; margin-left: 10px; float: left;}
+.m-part .list{ margin: 0; padding: 0; list-style: none; line-height: 30px; margin-left: 95px; }
 .m-part .info span{ display: block; color: #999; }
 .m-part ol{ line-height: 40px; margin-left: 0; padding-left: 0; }
 .m-part pre{ padding: 10px 20px; line-height: 30px; border-radius: 3px; box-shadow: 0 0 15px rgba(0,0,0,.5); }
