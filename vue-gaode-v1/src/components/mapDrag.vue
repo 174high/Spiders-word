@@ -16,12 +16,16 @@
     <div class="search" v-if="placeSearch">
       <input type="text" placeholder="请输入关键字" v-model="searchKey">
       <button type="button" @click="handleSearch">搜索</button>
-      <div id="js-result" v-show="searchKey" class="result"></div>
+      <!-- <h2>{{sayHello()}}</h2> -->
+      <!-- <h2>{{ a }}</h2> --> 
+      <!-- <h2>{{ a }}</h2> -->
+      <!-- <h2><button @click="add(2)">add</button></h2> -->
+      <div id="js-result" v-show="searchKey" class="result"></div>      
     </div>
-    <div id="js-container" class="map">正在加载数据 ...</div>
+    <div id="js-container" class="map">正在加载数据 ...</div>    
   </div>
 </template>
-
+11
 <script>
 import remoteLoad from '@/utils/remoteLoad.js'
 import { MapKey, MapCityName } from '@/config/config'
@@ -33,7 +37,9 @@ export default {
       placeSearch: null,
       dragStatus: false,
       AMapUI: null,
-      AMap: null
+      AMap: null,
+      num:88,
+      a:1,
     }
   },
   watch: {
@@ -41,15 +47,36 @@ export default {
       if (this.searchKey === '') {
         this.placeSearch.clear()
       }
+      this.a++
     }
   },
+
+
   methods: {
     // 搜索
+//    sayHello(){
+//        return this.num
+//     },
+
+//    add:function(num){
+//         if(num!=''){this.a+=num}
+//          else{this.a++}
+//     },
+
+//    add:function(num){
+//         if(num!=''){this.a+=num}
+//          else{this.a++}
+//          if (this.searchKey) {
+//          this.placeSearch.search(this.searchKey)
+//      }
+//    },
+
     handleSearch () {
       if (this.searchKey) {
         this.placeSearch.search(this.searchKey)
       }
     },
+
     // 实例化地图
     initMap () {
       // 加载PositionPicker，loadUI的路径参数为模块名中 'ui/' 之后的部分
@@ -58,13 +85,62 @@ export default {
       AMapUI.loadUI(['misc/PositionPicker'], PositionPicker => {
         let mapConfig = {
           zoom: 3,
-          cityName: MapCityName
+          cityName: MapCityName,
+          center: [107, 33]
         }
         if (this.lat && this.lng) {
               mapConfig.center = [this.lng, this.lat]
  //           mapConfig.center = [102, 33]
         }
         let map = new AMap.Map('js-container', mapConfig)
+
+/*
+    var marker = new AMap.Marker({
+        position: new AMap.LngLat(121,31),
+        offset: new AMap.Pixel(0,0),
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png', // 添加 Icon 图标 URL
+        title: 'elevator'
+    });
+
+    marker.setTitle('我是marker的title');
+
+// 设置label标签
+    // label默认蓝框白底左上角显示，样式className为：amap-marker-label
+   // marker.setLabel({
+   //     offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
+   //     content: "<div class='info'>我是 marker 的 label 标签</div>", //设置文本标注内容
+   //     direction: 'right' //设置文本标注方位
+   // });
+
+    map.add(marker);
+*/
+
+//   var map = new AMap.Map('container', {
+//        resizeEnable: true,
+//        center: [116.397428, 39.90923],
+ //       zoom: 13
+ //   });
+
+    var marker = new AMap.Marker({
+        position: new AMap.LngLat(121,31),
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+        offset: new AMap.Pixel(-13, -30)
+    });
+
+    marker.setMap(map);
+
+    // 设置鼠标划过点标记显示的文字提示
+    marker.setTitle('我是marker的title');
+
+    // 设置label标签
+    // label默认蓝框白底左上角显示，样式className为：amap-marker-label
+    marker.setLabel({
+        offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
+        content: "10",
+        direction: 'right' //设置文本标注方位
+    });
+
+   
         // 加载地图搜索插件
         AMap.service('AMap.PlaceSearch', () => {
           this.placeSearch = new AMap.PlaceSearch({
@@ -101,7 +177,12 @@ export default {
       })
     }
   },
+
   async created () {
+
+//   alert("this is test2")
+ //   setTimeout(()=>{alert("this is test2")},100)
+
     // 已载入高德地图API，则直接初始化地图
     if (window.AMap && window.AMapUI) {
       this.initMap()
@@ -118,6 +199,7 @@ export default {
 <style lang="css">
 .m-map{ min-width: 500px; min-height: 300px; position: relative; }
 .m-map .map{ width: 100%; height: 100%; }
+.amap-icon img {width: 25px;height: 34px;}
 .m-map .search{ position: absolute; top: 10px; left: 10px; width: 285px; z-index: 1; }
 .m-map .search input{ width: 180px; border: 1px solid #ccc; line-height: 20px; padding: 5px; outline: none; }
 .m-map .search button{ line-height: 26px; background: #fff; border: 1px solid #ccc; width: 50px; text-align: center; }
