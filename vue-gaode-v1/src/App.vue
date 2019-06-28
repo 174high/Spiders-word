@@ -5,7 +5,10 @@
         <!--<h3 class="title">Watch List </h3> -->
         <ul  class="watchlist">Watch List </ul >
         <ul class="list">        
-        <select>
+        <select name="public-choice" v-model="couponSelected" @change="getCouponSelected">                                        
+        <option :value="coupon.id" v-for="coupon in couponList" :key="coupon.id" >{{coupon.name}}</option>                                    
+        </select>
+<!--
           <option value="All units">All units</option>
           <option value="BIC5 (EU) release 2">BIC5 (EU) release 2</option>
           <option value="BIC5 (EU) release 4 and higher">BIC5 (EU) release 4 and higher</option>
@@ -21,7 +24,8 @@
           <option value="Schindler Direct Units">Schindler Direct Units</option>
           <option value="Service Contract Active">Service Contract Active</option>
           <option value="SMART">SMART</option>
-        </select>
+ </select>-->
+
         </ul>
         <!-- <h4 class="title">Select Portfolio</h4> -->
         <mapDrag @drag="dragMap" class="mapbox"></mapDrag>
@@ -53,9 +57,77 @@ export default {
         address: null,
         nearestJunction: null,
         nearestRoad: null,
-        nearestPOI: null
-      }
+        nearestPOI: null,        
+      },
+      couponList:[
+             {
+                 id: 'All units',
+                  name: 'All units'
+              },
+              {
+                   id: 'BIC5 (EU) release 2',
+                   name: 'BIC5 (EU) release 2'
+               },
+               {
+                   id: 'IC5 (EU) release 4 and higher',
+                   name: 'IC5 (EU) release 4 and higher'
+               },
+               {
+                   id: 'BIC7 (EU) release 1 and higher',
+                    name: 'BIC7 (EU) release 1 and higher'
+              },
+              {
+                   id: 'IoEE Cube Test Equipments',
+                  name: 'IoEE Cube Test Equipments'
+              },
+              {
+                 id: 'MX7 (EU)',
+                  name: 'MX7 (EU)'
+              },
+              {
+                 id: 'MX7 (EU) release 2',
+                  name: 'MX7 (EU) release 2'
+              },
+            {
+                 id: 'S2X00/5400/Eurolift',
+                 name: 'S2X00/5400/Eurolift'
+              },
+            {
+                 id: 'S3X00/5300',
+                  name: 'S3X00/5300'
+              },
+            {
+                 id: 'S5500',
+                  name: 'S5500'
+              },
+              {
+                 id: 'S6200',
+                 name: 'S6200'
+              },
+              {
+                 id: 'S6300',
+                  name: 'S6300'
+              },
+              {
+                  id: 'Schindler Direct Units',
+                  name: 'Schindler Direct Units'
+              },
+              {
+                 id: 'Service Contract Active',
+                  name: 'Service Contract Active'
+              },
+              {
+                 id: 'SMART',
+                  name: 'SMART'
+              }, 
+        ],                 
+      couponSelected: '',  
     }
+  },
+
+  created(){
+//如果没有这句代码，select中初始化会是空白的，默认选中就无法实现
+    this.couponSelected = this.couponList[0].id;
   },
 
   methods: {
@@ -68,6 +140,11 @@ export default {
         nearestRoad: data.nearestRoad,
         nearestPOI: data.nearestPOI
       }
+    },
+
+    getCouponSelected(){
+        //获取选中的优惠券
+        //console.log(this.dragData.couponSelected)
     }
   }
 
