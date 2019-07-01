@@ -6,29 +6,11 @@
         <ul  class="watchlist">Watch List </ul >
         <ul class="list">        
         <select name="public-choice" v-model="couponSelected" @change="getCouponSelected">                                        
-        <option :value="coupon.id" v-for="coupon in couponList" :key="coupon.id" >{{coupon.name}}</option>                                    
-        </select>
-<!--
-          <option value="All units">All units</option>
-          <option value="BIC5 (EU) release 2">BIC5 (EU) release 2</option>
-          <option value="BIC5 (EU) release 4 and higher">BIC5 (EU) release 4 and higher</option>
-          <option value="BIC7 (EU) release 1 and higher">BIC7 (EU) release 1 and higher</option>
-          <option value="IoEE Cube Test Equipments">IoEE Cube Test Equipments</option>
-          <option value="MX7 (EU)">MX7 (EU)</option>
-          <option value="MX7 (EU) release 2">MX7 (EU) release 2</option>
-          <option value="S2X00/5400/Eurolift">S2X00/5400/Eurolift</option>
-          <option value="S3X00/5300">S3X00/5300</option>
-          <option value="S5500">S5500</option>
-          <option value="S6200">S6200</option>
-          <option value="S6300">S6300</option>
-          <option value="Schindler Direct Units">Schindler Direct Units</option>
-          <option value="Service Contract Active">Service Contract Active</option>
-          <option value="SMART">SMART</option>
- </select>-->
-
+        <option :value="coupon.id" v-for="coupon in couponList" :key="coupon.id" >{{coupon.name}}</option>    
+        </select>                                
         </ul>
         <!-- <h4 class="title">Select Portfolio</h4> -->
-        <mapDrag @drag="dragMap" class="mapbox"></mapDrag>
+        <mapDrag v-bind:message="watchlist"  @drag="dragMap" class="mapbox"></mapDrag>
         <ul class="info">
           <li><span>经度：</span>{{ dragData.lng }}</li>
           <li><span>纬度：</span>{{ dragData.lat }}</li>
@@ -122,14 +104,17 @@ export default {
               }, 
         ],                 
       couponSelected: '',  
+      message:'' ,
+      watchlist:'test2',
     }
   },
-
+ 
   created(){
 //如果没有这句代码，select中初始化会是空白的，默认选中就无法实现
     this.couponSelected = this.couponList[0].id;
+    this.watchlist =this.couponSelected ;
   },
-
+   
   methods: {
     dragMap (data) {
       this.dragData = {
@@ -144,7 +129,8 @@ export default {
 
     getCouponSelected(){
         //获取选中的优惠券
-        //console.log(this.dragData.couponSelected)
+        //console.log(this.couponSelected)
+        this.watchlist =this.couponSelected ;
     }
   }
 

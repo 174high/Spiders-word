@@ -16,21 +16,21 @@
     <div class="search" v-if="placeSearch">
       <input type="text" placeholder="请输入关键字" v-model="searchKey">
       <button type="button" @click="handleSearch">搜索</button>
-      <!-- <h2>{{sayHello()}}</h2> -->
-      <!-- <h2>{{ a }}</h2> --> 
-      <!-- <h2>{{ a }}</h2> -->
-      <!-- <h2><button @click="add(2)">add</button></h2> -->
+      <h2>{{sayHello()}}</h2>
+      <h2>{{ message}}</h2> 
+      <h2><button @click="add()">add</button></h2> 
       <div id="js-result" v-show="searchKey" class="result"></div>      
     </div>
     <div id="js-container" class="map">正在加载数据 ...</div>    
   </div>
 </template>
-11
+
 <script>
 import remoteLoad from '@/utils/remoteLoad.js'
 import { MapKey, MapCityName } from '@/config/config'
 export default {
-  props: ['lat', 'lng'],
+//  props: ['lat', 'lng'],
+  props: {message:String},
   data () {
     return {
       searchKey: '',
@@ -38,8 +38,11 @@ export default {
       dragStatus: false,
       AMapUI: null,
       AMap: null,
-      num:88,
-      a:1,
+      map: null,
+      mapConfig: null,
+      num:'test',
+      test:'test',
+      a:'test',
     }
   },
   watch: {
@@ -51,83 +54,31 @@ export default {
     }
   },
 
+  mounted: function () {
+        this.$nextTick(function () {
+            setInterval(this.timer, 10000);
+        })
+  },
 
   methods: {
-    // 搜索
-//    sayHello(){
-//        return this.num
-//     },
+     sayHello(){
+        return this.test;
+     },
 
-//    add:function(num){
-//         if(num!=''){this.a+=num}
-//          else{this.a++}
-//     },
+    add:function(){
+          this.a=this.message;
+          this.test=this.message;
+     },
 
-//    add:function(num){
-//         if(num!=''){this.a+=num}
-//          else{this.a++}
-//          if (this.searchKey) {
-//          this.placeSearch.search(this.searchKey)
-//      }
-//    },
+     timer:function () {
 
-    handleSearch () {
-      if (this.searchKey) {
-        this.placeSearch.search(this.searchKey)
-      }
-    },
-
-    // 实例化地图
-    initMap () {
-      // 加载PositionPicker，loadUI的路径参数为模块名中 'ui/' 之后的部分
-      let AMapUI = this.AMapUI = window.AMapUI
-      let AMap = this.AMap = window.AMap
-      AMapUI.loadUI(['misc/PositionPicker'], PositionPicker => {
-        let mapConfig = {
-          zoom: 3,
-          cityName: MapCityName,
-          center: [107, 33]
-        }
-        if (this.lat && this.lng) {
-              mapConfig.center = [this.lng, this.lat]
- //           mapConfig.center = [102, 33]
-        }
-        let map = new AMap.Map('js-container', mapConfig)
-
-/*
-    var marker = new AMap.Marker({
-        position: new AMap.LngLat(121,31),
-        offset: new AMap.Pixel(0,0),
-        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png', // 添加 Icon 图标 URL
-        title: 'elevator'
-    });
-
-    marker.setTitle('我是marker的title');
-
-// 设置label标签
-    // label默认蓝框白底左上角显示，样式className为：amap-marker-label
-   // marker.setLabel({
-   //     offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
-   //     content: "<div class='info'>我是 marker 的 label 标签</div>", //设置文本标注内容
-   //     direction: 'right' //设置文本标注方位
-   // });
-
-    map.add(marker);
-*/
-
-//   var map = new AMap.Map('container', {
-//        resizeEnable: true,
-//        center: [116.397428, 39.90923],
- //       zoom: 13
- //   });
-
-    var marker = new AMap.Marker({
+  var marker = new AMap.Marker({
         position: new AMap.LngLat(121,31),
         icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
         offset: new AMap.Pixel(-13, -30)
     });
 
-    marker.setMap(map);
+    marker.setMap(this.map);
 
     // 设置鼠标划过点标记显示的文字提示
     marker.setTitle('我是marker的title');
@@ -140,7 +91,31 @@ export default {
         direction: 'right' //设置文本标注方位
     });
 
-   
+    }, 
+    handleSearch () {
+      if (this.searchKey) {
+        this.placeSearch.search(this.searchKey)
+      }
+    },
+    // 实例化地图
+    initMap () {
+   // 加载PositionPicker，loadUI的路径参数为模块名中 'ui/' 之后的部分
+      let AMapUI = this.AMapUI = window.AMapUI 
+      let AMap = this.AMap = window.AMap 
+
+      AMapUI.loadUI(['misc/PositionPicker'], PositionPicker => {
+        this.mapConfig = {
+          zoom: 3,
+          cityName: MapCityName,
+          center: [107, 33]
+        }
+        if (this.lat && this.lng) {
+              mapConfig.center = [this.lng, this.lat]
+ //           this.mapConfig.center = [102, 33]
+        }
+        
+        this.map = new AMap.Map('js-container', this.mapConfig) 
+
         // 加载地图搜索插件
         AMap.service('AMap.PlaceSearch', () => {
           this.placeSearch = new AMap.PlaceSearch({
@@ -148,7 +123,7 @@ export default {
             pageIndex: 1,
             citylimit: true,
             city: MapCityName,
-            map: map,
+            map: this.map,
             //panel: 'js-result'
           })
         })
@@ -161,7 +136,7 @@ export default {
         // 创建地图拖拽
         let positionPicker = new PositionPicker({
           mode: 'dragMap', // 设定为拖拽地图模式，可选'dragMap'、'dragMarker'，默认为'dragMap'
-          map: map // 依赖地图对象
+          map: this.map // 依赖地图对象
         })
         // 拖拽完成发送自定义 drag 事件
         positionPicker.on('success', positionResult => {
