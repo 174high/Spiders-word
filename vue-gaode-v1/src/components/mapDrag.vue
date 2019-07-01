@@ -27,7 +27,9 @@
 
 <script>
 import remoteLoad from '@/utils/remoteLoad.js'
-import { MapKey, MapCityName } from '@/config/config'
+import { MapKey, MapCityName} from '@/config/config'
+import {provinces} from '@/data/elevators'
+
 
 export default {
 //  props: ['lat', 'lng'],
@@ -41,18 +43,26 @@ export default {
       AMap: null,
       map: null,
       mapConfig: null,
+      markers :null,
       num:'test',
       test:'test',
       a:'test',
     }
   },
+
   watch: {
     searchKey () {
       if (this.searchKey === '') {
         this.placeSearch.clear()
       }
       this.a++
+    },
+
+    message(){
+    this.map.clearMap();
+    this.do_marker();
     }
+
   },
 
   mounted: function () {
@@ -72,193 +82,27 @@ export default {
      },
 
      timer:function () {
+         this.do_marker();
+    }, 
 
-     var provinces = [{
-	"name": "北京市",
-	"center": "116.405285,39.904989",
-	"type": 0,
-	"subDistricts": [] ,
-        "elevators": 1235 ,
-        }, {
-	"name": "天津市",
-	"center": "117.190182,39.125596",
-	"type": 0,
-	"subDistricts": [],
-        "elevators": 3564 ,        
-        }, {
-	"name": "河北省",
-	"center": "114.502461,38.045474",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "山西省",
-	"center": "112.549248,37.857014",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "内蒙古自治区",
-	"center": "111.670801,40.818311",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "辽宁省",
-	"center": "123.429096,41.796767",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "吉林省",
-	"center": "125.3245,43.886841",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "黑龙江省",
-	"center": "126.642464,45.756967",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "上海市",
-	"center": "121.472644,31.231706",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "江苏省",
-	"center": "118.767413,32.041544",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "浙江省",
-	"center": "120.153576,30.287459",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "安徽省",
-	"center": "117.283042,31.86119",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "福建省",
-	"center": "119.306239,26.075302",
-	"type": 1,
-	"subDistricts": [],
-        "elevators": 209 , 
-        }, {
-	"name": "江西省",
-	"center": "115.892151,28.676493",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "山东省",
-	"center": "117.000923,36.675807",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "河南省",
-	"center": "113.665412,34.757975",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "湖北省",
-	"center": "114.298572,30.584355",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "湖南省",
-	"center": "112.982279,28.19409",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "广东省",
-	"center": "113.280637,23.125178",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "广西壮族自治区",
-	"center": "108.320004,22.82402",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "海南省",
-	"center": "110.33119,20.031971",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "重庆市",
-	"center": "106.504962,29.533155",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "四川省",
-	"center": "104.065735,30.659462",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "贵州省",
-	"center": "106.713478,26.578343",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "云南省",
-	"center": "102.712251,25.040609",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "西藏自治区",
-	"center": "91.132212,29.660361",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "陕西省",
-	"center": "108.948024,34.263161",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "甘肃省",
-	"center": "103.823557,36.058039",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "青海省",
-	"center": "101.778916,36.623178",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "宁夏回族自治区",
-	"center": "106.278179,38.46637",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "新疆维吾尔自治区",
-	"center": "87.617733,43.792818",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "台湾省",
-	"center": "121.509062,25.044332",
-	"type": 2,
-	"subDistricts": []
-        }, {
-	"name": "香港特別行政區",
-	"center": "114.173355,22.320048",
-	"type": 1,
-	"subDistricts": []
-        }, {
-	"name": "澳門特別行政區",
-	"center": "113.54909,22.198951",
-	"type": 1,
-	"subDistricts": []
-        }];
+  do_marker()
+  { 
+       for (var i=0;i< provinces.length;i++){
 
-        for (var i = 0; i < provinces.length; i += 1) {  
-        //    if (provinces[i].type === 0) {
+        if(provinces[i][0].list_type==this.message)
+        {
 
-            if(provinces[i].elevators==null)
+        for (var j = 0; j < provinces[i].length; j += 1) {  
+        //    if (provinces[i][j].type === 0) {
+
+            if(provinces[i][j].elevators==null||provinces[i][j].elevators==0)
             continue;
 
             var marker = new AMap.Marker({
-            position: provinces[i].center.split(','),
+            position: provinces[i][j].center.split(','),
             icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
-            offset: new AMap.Pixel(-12,-12),
-            title: provinces[i].name,
+            offset: new AMap.Pixel(-18,-18),
+            title: provinces[i][j].name,
             });
 
             marker.setMap(this.map);
@@ -266,15 +110,19 @@ export default {
             // label默认蓝框白底左上角显示，样式className为：amap-marker-label
             marker.setLabel({
               offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
-              content: provinces[i].elevators,
+              content: provinces[i][j].elevators,
               direction: 'right' //设置文本标注方位
             });
 
+            //this.markers.push(marker);
+
        //     } 
-
         }
+        }
+        } 
 
-    }, 
+    },
+
     handleSearch () {
       if (this.searchKey) {
         this.placeSearch.search(this.searchKey)
@@ -285,6 +133,9 @@ export default {
    // 加载PositionPicker，loadUI的路径参数为模块名中 'ui/' 之后的部分
       let AMapUI = this.AMapUI = window.AMapUI 
       let AMap = this.AMap = window.AMap 
+
+      this.message="All units"
+      this.do_marker()
 
       AMapUI.loadUI(['misc/PositionPicker'], PositionPicker => {
         this.mapConfig = {
@@ -337,8 +188,6 @@ export default {
   },
 
   async created () {
-
-
     // 已载入高德地图API，则直接初始化地图
     if (window.AMap && window.AMapUI) {
       this.initMap()

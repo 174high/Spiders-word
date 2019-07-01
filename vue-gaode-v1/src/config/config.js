@@ -1,4 +1,5 @@
-ï»¿// é«˜å¾·åœ°å›¾ key
+// ¸ßµÂµØÍ¼ key
 export const MapKey = 'cfd8da5cf010c5f7441834ff5e764f5b'
-// åœ°å›¾é™å®šåŸå¸‚
-export const MapCityName = 'ä¸Šæµ·'
+// µØÍ¼ÏŞ¶¨³ÇÊĞ
+export const MapCityName = 'ÉÏº£'
+
