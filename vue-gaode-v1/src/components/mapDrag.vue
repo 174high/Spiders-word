@@ -16,9 +16,9 @@
     <div class="search" v-if="placeSearch">
       <input type="text" placeholder="请输入关键字" v-model="searchKey">
       <button type="button" @click="handleSearch">搜索</button>
-      <h2>{{sayHello()}}</h2>
-      <h2>{{ message}}</h2> 
-      <h2><button @click="add()">add</button></h2> 
+      <!--<h2>{{sayHello()}}</h2>
+      <h2>{{ message}}</h2>  
+      <h2><button @click="add()">add</button></h2> -->
       <div id="js-result" v-show="searchKey" class="result"></div>      
     </div>
     <div id="js-container" class="map">正在加载数据 ...</div>    
@@ -72,18 +72,18 @@ export default {
   },
 
   methods: {
-     sayHello(){
-        return this.test;
-     },
+//     sayHello(){
+//        return this.test;
+//     },
 
-    add:function(){
-          this.a=this.message;
-          this.test=this.message;
-     },
+//    add:function(){
+//          this.a=this.message;
+//          this.test=this.message;
+//     },
 
      timer:function () {
          this.do_marker();
-    }, 
+  }, 
 
   do_marker()
   { 
@@ -134,9 +134,6 @@ export default {
       let AMapUI = this.AMapUI = window.AMapUI 
       let AMap = this.AMap = window.AMap 
 
-      this.message="All units"
-      this.do_marker()
-
       AMapUI.loadUI(['misc/PositionPicker'], PositionPicker => {
         this.mapConfig = {
           zoom: 3,
@@ -158,7 +155,7 @@ export default {
             citylimit: true,
             city: MapCityName,
             map: this.map,
-            //panel: 'js-result'
+            panel: 'js-result'
           })
         })
         // 启用工具条

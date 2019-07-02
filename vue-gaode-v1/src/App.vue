@@ -51,8 +51,8 @@ export default {
                    name: 'BIC5 (EU) release 2'
                },
                {
-                   id: 'IC5 (EU) release 4 and higher',
-                   name: 'IC5 (EU) release 4 and higher'
+                   id: 'BIC5 (EU) release 4 and higher',
+                   name: 'BIC5 (EU) release 4 and higher'
                },
                {
                    id: 'BIC7 (EU) release 1 and higher',
