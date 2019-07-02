@@ -44,9 +44,8 @@ export default {
       map: null,
       mapConfig: null,
       markers :null,
-      num:'test',
-      test:'test',
-      a:'test',
+//      test:'test',
+//      a:'test',
     }
   },
 

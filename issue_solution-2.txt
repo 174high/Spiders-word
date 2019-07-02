@@ -5,3 +5,10 @@ solution: restart your computer
 2. there is a better way to fix it forever 
 
 solution: change port number after get blocked by server
+
+3. release the port you use and restart the chrome again
+
+netstat -ano|findstr 1099
+查看哪个进程占用了1099端口
+然后关掉对应的进程
+taskkill /pid 12540 /f
