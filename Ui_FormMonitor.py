@@ -34,21 +34,6 @@ class Ui_Form(object):
         self.pushButton.setGeometry(QtCore.QRect(370, 10, 221, 41))
         self.pushButton.setObjectName("pushButton")
         self.web.addTab(self.tab_Equipment, "")
-        self.map = QtWidgets.QWidget()
-        self.map.setObjectName("map")
-        self.gridLayout_4 = QtWidgets.QGridLayout(self.map)
-        self.gridLayout_4.setObjectName("gridLayout_4")
-        self.gridLayout_3 = QtWidgets.QGridLayout()
-        self.gridLayout_3.setObjectName("gridLayout_3")
-        self.pushButton_2 = QtWidgets.QPushButton(self.map)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout_3.addWidget(self.pushButton_2, 0, 0, 1, 1)
-        self.label = QtWidgets.QLabel(self.map)
-        self.label.setText("")
-        self.label.setObjectName("label")
-        self.gridLayout_3.addWidget(self.label, 1, 0, 1, 1)
-        self.gridLayout_4.addLayout(self.gridLayout_3, 0, 0, 1, 1)
-        self.web.addTab(self.map, "")
         self.web1 = QtWidgets.QWidget()
         self.web1.setObjectName("web1")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.web1)
@@ -57,7 +42,7 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.web, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.web.setCurrentIndex(2)
+        self.web.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -77,17 +62,6 @@ class Ui_Form(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">10000021</p></body></html>"))
         self.pushButton.setText(_translate("Form", "Generate Feedback.docx"))
         self.web.setTabText(self.web.indexOf(self.tab_Equipment), _translate("Form", "Equipment"))
-        self.pushButton_2.setText(_translate("Form", "Search"))
-        self.web.setTabText(self.web.indexOf(self.map), _translate("Form", "map"))
         self.web.setTabText(self.web.indexOf(self.web1), _translate("Form", "web"))
 
 import resources_rc
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    FormSerialPort = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(FormSerialPort)
-    FormSerialPort.show()
-    sys.exit(app.exec_())

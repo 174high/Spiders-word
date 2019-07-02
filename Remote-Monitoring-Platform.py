@@ -25,10 +25,7 @@ class Window(QWidget, Ui_Form):
         super(Window, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
-        self.switch=0
-        self.timer = QTimer(self) 
-        self.timer.timeout.connect(self.set_origin_pic) 
-        self.timer.start(100)    
+        self.switch=0   
 
         self.browser = QWebEngineView()
 #        url = 'https://map.baidu.com/search/%E6%98%9F%E5%B7%B4%E5%85%8B/@11671891.22,4104027.879999999,4.86z?querytype=s&c=1&wd=%E6%98%9F%E5%B7%B4%E5%85%8B&da_src=shareurl&on_gel=1&l=4&gr=1&b=(5928478.313716695,1388781.7288436913;17509054.96313347,6618135.872095954)&pn=0&device_ratio=2'
@@ -38,14 +35,13 @@ class Window(QWidget, Ui_Form):
 #        os.path.abspath('data/map_vue.html')))        
 
         self.gridLayout_5.addWidget(self.browser)
-
         self.pushButton.clicked.connect(self.get_equipment)
-        self.pushButton_2.clicked.connect(self.search)
+
 
     def call_web(self,equipment):
 
 	# create a browser instance
-        self.browser = pychrome.Browser(url="http://127.0.0.1:9221")
+        self.browser = pychrome.Browser(url="http://127.0.0.1:9235")
 	# create a tab'
         self.tab = self.browser.new_tab()
 	# start the tab 
@@ -130,6 +126,9 @@ class Window(QWidget, Ui_Form):
         doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,(soup.select("#TaPhoneNumber"))[0]['value'])
         doc.save('rmp info-result.docx')
 
+        print("address=",(soup.select("#CityAndZip"))[0]['value'],(soup.select("#Address"))[0]['value'])
+
+
         # stop the tab (stop handle events and stop recv message from chrome)
         self.tab.stop()
         self.browser.close_tab(self.tab)
@@ -140,7 +139,7 @@ class Window(QWidget, Ui_Form):
     def watch_list(self):
 
         # create a browser instance
-        browser = pychrome.Browser(url="http://127.0.0.1:9227")
+        browser = pychrome.Browser(url="http://127.0.0.1:9235")
         # create a tab
         tab = browser.new_tab()
         # start the tab 
@@ -179,35 +178,10 @@ class Window(QWidget, Ui_Form):
     def get_equipment(self):
         equipment = self.textEdit.toPlainText()
         print(equipment)
-        self.watch_list()
-#        self.call_web(equipment)
+#        self.watch_list()
+        self.call_web(equipment)
 
           
-    def set_origin_pic(self):
-        pic=QtGui.QPixmap(":/qrc/china.PNG")
-        pic=pic.scaled(QSize(800,450),Qt.KeepAspectRatio)
-        self.label.setPixmap(pic)      
-        self.timer.stop()  
-
-    def search(self):
-
-        if self.switch==0 :
-            pic1=QtGui.QPixmap(":/qrc/shanghai.PNG")
-            pic1=pic1.scaled(QSize(800,450),Qt.KeepAspectRatio)
-            self.label.setPixmap(pic1)
-            self.switch=1
-        elif self.switch==1 :
-            pic1=QtGui.QPixmap(":/qrc/detail.PNG")
-            pic1=pic1.scaled(QSize(800,450),Qt.KeepAspectRatio);
-            self.label.setPixmap(pic1)
-            self.switch=2
-        elif self.switch==2 :
-            pic1=QtGui.QPixmap(":/qrc/china.PNG")
-            pic1=pic1.scaled(QSize(800,450),Qt.KeepAspectRatio)
-            self.label.setPixmap(pic1)
-            self.switch=0 
-   
-
 
 def signal_handler(signal,frame):
     print('You pressed Ctrl+C!')

@@ -67,7 +67,7 @@ export default {
 
   mounted: function () {
         this.$nextTick(function () {
-            setInterval(this.timer, 3000);
+            setInterval(this.timer, 1000);
         })
   },
 
