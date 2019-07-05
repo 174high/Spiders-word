@@ -1,9 +1,10 @@
 ﻿from PyQt5.QtCore import pyqtSlot, QIODevice, QByteArray 
 from PyQt5.QtSerialPort import QSerialPortInfo, QSerialPort
-from PyQt5.QtWidgets import QWidget, QMessageBox
+from PyQt5.QtWidgets import QWidget, QMessageBox,QProgressDialog
 from PyQt5 import QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import *
+
 
 import pychrome
 from bs4 import BeautifulSoup
@@ -34,25 +35,40 @@ class Window(QWidget, Ui_Form):
 #        self.browser.load(QUrl.fromLocalFile(
 #        os.path.abspath('data/map_vue.html')))        
 
-        self.gridLayout_5.addWidget(self.browser)
-        self.pushButton.clicked.connect(self.get_equipment)
+        # create a browser instance
+        self.browser_chrome = pychrome.Browser(url="http://127.0.0.1:9235")
 
+        self.gridLayout_5.addWidget(self.browser)
+#        self.pushButton.clicked.connect(self.get_equipment)
+        self.pushButton.clicked.connect(self.showDialog)
 
     def call_web(self,equipment):
 
-	# create a browser instance
-        self.browser = pychrome.Browser(url="http://127.0.0.1:9235")
 	# create a tab'
-        self.tab = self.browser.new_tab()
+        self.tab = self.browser_chrome.new_tab()
 	# start the tab 
         self.tab.start()
         # call method
         self.tab.Network.enable()
 
+
+        for i in range(3000,4000):            
+            self.progress.setValue(i) 
+            if self.progress.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                break
+
         # call method with timeout
         self.tab.call_method('Page.navigate',url="http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr="+equipment, _timeout=2)
 	# wait for loading
         self.tab.wait(1)
+
+        for i in range(4000,8000):            
+            self.progress.setValue(i) 
+            if self.progress.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                break
+
 
         html = self.tab.Runtime.evaluate(expression="document.documentElement.outerHTML")
 
@@ -61,10 +77,9 @@ class Window(QWidget, Ui_Form):
         print(soup.prettify())
 
         #print(soup)
-        print(soup.select("#ProductLineDesc"))
-        print(type((soup.select("#ProductLineDesc"))[0]['value']))
-        print(soup.title)	
-        self.textBrowser_Product_Line.setText((soup.select("#ProductLineDesc"))[0]['value'])
+        #print(soup.select("#ProductLineDesc"))
+        #print(type((soup.select("#ProductLineDesc"))[0]['value']))
+        #print(soup.title)	
 
         doc = docx.Document('Field Problem Feedback-Template.docx')
 
@@ -131,49 +146,14 @@ class Window(QWidget, Ui_Form):
 
         # stop the tab (stop handle events and stop recv message from chrome)
         self.tab.stop()
-        self.browser.close_tab(self.tab)
+#        self.browser_chrome.close_tab(self.tab)
 
 #    def request_will_be_sent(**kwargs):
 #        print("loading: %s" % kwargs.get('request').get('url'))
 
     def watch_list(self):
 
-        # create a browser instance
-        browser = pychrome.Browser(url="http://127.0.0.1:9235")
-        # create a tab
-        tab = browser.new_tab()
-        # start the tab 
-        tab.start()
-        # call method
-        tab.Network.enable()
-        # call method with timeout
-        #tab.Page.navigate(url="http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr=10000021", _timeout=1)
-        tab.call_method('Page.navigate',url="http://rmp.global.schindler.com/Monitoring/WatchList", _timeout=1)
-        # wait for loading
-        tab.wait(2)
-        html = tab.Runtime.evaluate(expression="document.documentElement.outerHTML")
-        soup = BeautifulSoup(((html['result'])['value']),"html.parser")
-
-        for link in soup.find_all(class_="k-list-optionlabel k-state-selected k-state-focused"):
-            print(link)
-
-        for link in soup.find_all(class_="k-item",role="option"):
-            print(link)
-
-        #print(soup)
-#        print((soup.select("#http://rmp.global.schindler.com/Equipment/EquipmentMain"))[0]['value'])
-        print(soup.title)
-
-        for link in soup.find_all('a'):
-            if link.get('href').find("equnr=") > 0 :
-#                print(link.get('href')[link.get('href').find("equnr=")+6:])
-                 print(link)
-
-        # stop the tab (stop handle events and stop recv message from chrome)
-        tab.stop()
-
-        # close tab
-        browser.close_tab(tab)
+        print("watch list")
 
     def get_equipment(self):
         equipment = self.textEdit.toPlainText()
@@ -181,7 +161,34 @@ class Window(QWidget, Ui_Form):
 #        self.watch_list()
         self.call_web(equipment)
 
-          
+    def showDialog(self):
+        num = 10000
+        self.progress = QProgressDialog(self)
+        self.progress.setWindowTitle("请稍等")  
+        self.progress.setLabelText("正在操作...")
+        self.progress.setCancelButtonText("取消")
+        self.progress.setMinimumDuration(5)
+        self.progress.setWindowModality(Qt.WindowModal)
+        self.progress.setRange(0,num) 
+        self.progress.setValue(0)  
+
+        for i in range(0,3000):            
+            self.progress.setValue(i) 
+            if self.progress.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                break
+
+        self.get_equipment()
+
+        for i in range(8000,num):            
+            self.progress.setValue(i) 
+            if self.progress.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                break
+
+        self.progress.setValue(num)
+        QMessageBox.information(self,"提示","操作成功")
+         
 
 def signal_handler(signal,frame):
     print('You pressed Ctrl+C!')
