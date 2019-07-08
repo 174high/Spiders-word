@@ -48,8 +48,8 @@ class Window(QWidget, Ui_Form):
 #        self.pushButton.clicked.connect(self.get_equipment)
         self.pushButton.clicked.connect(self.showDialog)
 
-    def call_web(self,equipment):
-        for i in range(3000,4000):            
+    def call_web(self,equipment,progress_in,progress_out):
+        for i in range(progress_in,progress_out):            
             self.progress.setValue(i) 
             if self.progress.wasCanceled():
                 QMessageBox.warning(self,"提示","操作失败") 
@@ -61,15 +61,11 @@ class Window(QWidget, Ui_Form):
 	    # wait for loading
             self.tab.wait(1)
 
-            for i in range(4000,8000):            
-                self.progress.setValue(i) 
-                if self.progress.wasCanceled():
-                    QMessageBox.warning(self,"提示","操作失败") 
-                    break
         except:
             #stop_chrome()
             #run_chrome()
             print ("Error: run chrome error!")
+            return 1
 
         try:
             html = self.tab.Runtime.evaluate(expression="document.documentElement.outerHTML")
@@ -146,10 +142,13 @@ class Window(QWidget, Ui_Form):
             #stop_chrome()
             #run_chrome()
             print ("Error: process html error!")
+            return 1
 
         # stop the tab (stop handle events and stop recv message from chrome)
         #self.tab.stop()
         #self.browser_chrome.close_tab(self.tab)
+
+        return 0
 
 #    def request_will_be_sent(**kwargs):
 #        print("loading: %s" % kwargs.get('request').get('url'))
@@ -161,8 +160,9 @@ class Window(QWidget, Ui_Form):
     def get_equipment(self):
         equipment = self.textEdit.toPlainText()
         print(equipment)
-#        self.watch_list()
-        self.call_web(equipment)
+#        self.watch_list()   
+        result=self.call_web(equipment,3000,4000)
+        return result
 
     def showDialog(self):
         num = 10000
@@ -181,7 +181,17 @@ class Window(QWidget, Ui_Form):
                 QMessageBox.warning(self,"提示","操作失败") 
                 break
 
-        self.get_equipment()
+        result=self.get_equipment()
+        print("result:",result) 
+
+        run_num=0
+        while result  :
+            result=self.get_equipment()      
+            print("result:",result) 
+            run_num=run_num+1
+            if run_num > 5:
+               QMessageBox.warning(self,"提示","操作失败,请重启软件") 
+               break
 
         for i in range(8000,num):            
             self.progress.setValue(i) 
