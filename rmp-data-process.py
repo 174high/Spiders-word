@@ -8,7 +8,7 @@ import re
 province_city = {
     '北京市': ['北京市'],
     '天津市': ['天津市'],
-    '上海市': ['上海市',"SHANGHAI"],
+    '上海市': ['上海市',"SHANGHAI","BGWHXX"],
     '重庆市': ['重庆市'],
     '河南省': ['郑州市', '洛阳市', '焦作市', '商丘市', '信阳市', '周口市', '鹤壁市', '安阳市', '濮阳市', '驻马店市', '南阳市', '开封市', '漯河市', '许昌市', '新乡市', '济源市', '灵宝市', '偃师市', '邓州市', '登封市', '三门峡市', '新郑市', '禹州市', '巩义市', '永城市', '长葛市', '义马市', '林州市', '项城市', '汝州市', '荥阳市', '平顶山市', '卫辉市', '辉县市', '舞钢市', '新密市', '孟州市', '沁阳市', '郏县'],
     '安徽省': ['合肥市', '亳州市', '芜湖市', '马鞍山市', '池州市', '黄山市', '滁州市', '安庆市', '淮南市', '淮北市', '蚌埠市', '宿州市', '宣城市', '六安市', '阜阳市', '铜陵市', '明光市', '天长市', '宁国市', '界首市', '桐城市'],
@@ -176,9 +176,13 @@ while(1):
     print("debugging--- comfirm_num= ",comfirm_num)   
 
     for link in soup.find_all('td'):
-        #print(type(link))
-        #print(str(link.string))
+        print(type(link))
+        print(str(link.string))
 
+
+    exit(0)    
+
+'''
          if 1:       
 #             print(str(link.string))             
              for province in province_city.items():
@@ -193,10 +197,8 @@ while(1):
                          if len(addr) <= 1:
                               print(str(link.string))
                               comfirm_num=comfirm_num+1 
-    exit(0)
+'''
                
-      
-
 # stop the tab (stop handle events and stop recv message from chrome)
 tab.stop()
 
