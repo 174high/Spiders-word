@@ -46,7 +46,7 @@ class Window(QWidget, Ui_Form):
 
         self.gridLayout_5.addWidget(self.browser)
 #        self.pushButton.clicked.connect(self.get_equipment)
-        self.pushButton.clicked.connect(self.showDialog)
+        self.pushButton.clicked.connect(self.process_one_equipment)
 
     def call_web(self,equipment,progress_in,progress_out):
         for i in range(progress_in,progress_out):            
@@ -107,7 +107,7 @@ class Window(QWidget, Ui_Form):
 
 #           doc=Word.input_table_data(doc,"Machine Type",(soup.select("#Machine type"))[0]['value'],4)
 
-            doc.save('Feedback.docx')
+            doc.save('Feedback-'+equipment+'.docx')
 
             doc = docx.Document('rmp info-Template.docx')
             doc=Word.input_table_data(doc,"Equipment #",(soup.select("#Equnr"))[0]['value'],4) 
@@ -135,7 +135,7 @@ class Window(QWidget, Ui_Form):
             doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             data="Phone/Mail:"
             doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,(soup.select("#TaPhoneNumber"))[0]['value'])
-            doc.save('rmp info-result.docx')
+            doc.save("rmp info-result-"+equipment+".docx")
 
             print("address=",(soup.select("#CityAndZip"))[0]['value'],(soup.select("#Address"))[0]['value'])
         except:
@@ -154,17 +154,14 @@ class Window(QWidget, Ui_Form):
 #        print("loading: %s" % kwargs.get('request').get('url'))
 
     def watch_list(self):
-
         print("watch list")
 
-    def get_equipment(self):
+
+    def process_one_equipment(self):
         equipment = self.textEdit.toPlainText()
         print(equipment)
-#        self.watch_list()   
-        result=self.call_web(equipment,3000,4000)
-        return result
 
-    def showDialog(self):
+
         num = 10000
         self.progress = QProgressDialog(self)
         self.progress.setWindowTitle("请稍等")  
@@ -179,21 +176,21 @@ class Window(QWidget, Ui_Form):
             self.progress.setValue(i) 
             if self.progress.wasCanceled():
                 QMessageBox.warning(self,"提示","操作失败") 
-                break
+                return
 
-        result=self.get_equipment()
+        result=self.call_web(equipment,3000,4000)
         print("result:",result) 
 
         run_num=0
         while result  :
-            result=self.get_equipment()      
+            result=self.call_web(equipment,4000,4000)
             print("result:",result) 
             run_num=run_num+1
-            if run_num > 5:
+            if run_num > 10:
                QMessageBox.warning(self,"提示","操作失败,请重启软件") 
-               break
+               return 
 
-        for i in range(8000,num):            
+        for i in range(4000,num):            
             self.progress.setValue(i) 
             if self.progress.wasCanceled():
                 QMessageBox.warning(self,"提示","操作失败") 
