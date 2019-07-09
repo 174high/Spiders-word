@@ -34,19 +34,35 @@ class Window(QWidget, Ui_Form):
 
         stop_chrome()
         run_chrome()
-        # create a browser instance
-        self.browser_chrome = pychrome.Browser(url="http://127.0.0.1:9235")
 
-        # create a tab'
-        self.tab = self.browser_chrome.new_tab()
-	# start the tab 
-        self.tab.start()
-        # call method
-        self.tab.Network.enable() 
+        run_num=0
+        result=self.start_chrome()
+        while(result):
+            result=self.start_chrome() 
+            if run_num>5: 
+                exit(0)
 
         self.gridLayout_5.addWidget(self.browser)
-#        self.pushButton.clicked.connect(self.get_equipment)
+        self.pushButton_2.clicked.connect(self.watch_list)
         self.pushButton.clicked.connect(self.process_one_equipment)
+
+
+    def start_chrome(self):
+
+        try:
+        # create a browser instance
+            self.browser_chrome = pychrome.Browser(url="http://127.0.0.1:9235")
+        # create a tab'
+            self.tab = self.browser_chrome.new_tab()
+	# start the tab 
+            self.tab.start()
+        # call method
+            self.tab.Network.enable() 
+        except: 
+            print("run pychrome.Browser error")
+            return 1
+
+        return 0       
 
     def call_web(self,equipment,progress_in,progress_out):
         for i in range(progress_in,progress_out):            
@@ -155,12 +171,55 @@ class Window(QWidget, Ui_Form):
 
     def watch_list(self):
         print("watch list")
+        equipments={"10000021","10000022","10000023","10000024"}
+        print(equipments)
+
+        num = 10000
+        self.progress = QProgressDialog(self)
+        self.progress.setWindowTitle("请稍等")  
+        self.progress.setLabelText("正在操作...")
+        self.progress.setCancelButtonText("取消")
+        self.progress.setMinimumDuration(5)
+        self.progress.setWindowModality(Qt.WindowModal)
+        self.progress.setRange(0,num) 
+        self.progress.setValue(0)  
+
+        for i in range(0,1000):            
+            self.progress.setValue(i) 
+            if self.progress.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                return 
+
+        progress_bar=1000
+                     
+        for equipment in equipments:
+        
+            result=self.call_web(equipment,progress_bar,progress_bar+400)
+            print("result:",result) 
+
+            progress_bar=progress_bar+400
+            run_num=0
+            while result  :
+                result=self.call_web(equipment,progress_bar,progress_bar)
+                print("result:",result) 
+                run_num=run_num+1
+                if run_num > 10:
+                    QMessageBox.warning(self,"提示","操作失败,请重启软件") 
+                    return 
+
+        for i in range(9000,num):            
+            self.progress.setValue(i) 
+            if self.progress.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                return 
+
+        self.progress.setValue(num)
+        QMessageBox.information(self,"提示","操作成功")
 
 
     def process_one_equipment(self):
         equipment = self.textEdit.toPlainText()
         print(equipment)
-
 
         num = 10000
         self.progress = QProgressDialog(self)
@@ -176,7 +235,7 @@ class Window(QWidget, Ui_Form):
             self.progress.setValue(i) 
             if self.progress.wasCanceled():
                 QMessageBox.warning(self,"提示","操作失败") 
-                return
+                return                 
 
         result=self.call_web(equipment,3000,4000)
         print("result:",result) 
@@ -194,7 +253,7 @@ class Window(QWidget, Ui_Form):
             self.progress.setValue(i) 
             if self.progress.wasCanceled():
                 QMessageBox.warning(self,"提示","操作失败") 
-                break
+                return 
 
         self.progress.setValue(num)
         QMessageBox.information(self,"提示","操作成功")
