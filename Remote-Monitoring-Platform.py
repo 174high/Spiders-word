@@ -38,6 +38,8 @@ class Window(QWidget, Ui_Form):
         run_num=0
         result=self.start_chrome()
         while(result):
+            stop_chrome()
+            run_chrome()
             result=self.start_chrome() 
             if run_num>5: 
                 exit(0)
