@@ -73,7 +73,7 @@ pyinstaller   Remote-Monitoring-Platform.py              //there is a console in
 pyinstaller --noconsole  --ico="name .ico"  Remote-Monitoring-Platform.py  // creat an icon we need 
 
 ----------------------------------------------------------------
-run map service for rmp 
+4. run map service for rmp 
 
 npm run serve
 

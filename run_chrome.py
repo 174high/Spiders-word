@@ -50,7 +50,7 @@ def run_chrome():
 if __name__ == "__main__":
 
     stop_chrome()
-    run_chrome()    
+#    run_chrome()    
 
 
     while 1:

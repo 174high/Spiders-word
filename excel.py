@@ -5,9 +5,7 @@ from openpyxl import Workbook
 def merge_file(path,output_file):
 
     print(path)
-
     fileList=os.listdir(path)
-
     wkbk = Workbook()
 
     for file in fileList:
@@ -22,14 +20,10 @@ def merge_file(path,output_file):
 #                    print((outsheet.cell(row=i, column=j)))
                     outsheet.cell(row=i, column=j,value=sheet.cell(row=i, column=j).value)
 
-
     wkbk.remove(wkbk.get_sheet_by_name("Sheet"))
-
     wkbk.save(output_file)
-
 
 if __name__ == "__main__":
 
-    merge_file("./device-log/","merge.xlsx")
-
-
+    merge_file("./device-log/","merge-log.xlsx")
+    merge_file("./device-event/","merge-event.xlsx")

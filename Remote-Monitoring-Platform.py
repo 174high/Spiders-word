@@ -14,6 +14,7 @@ import re
 from change_paragraph import Word 
 from Ui_FormMonitor import Ui_Form 
 from run_chrome import stop_chrome,run_chrome
+from excel import merge_file
 
 import datetime
 import docx
@@ -27,10 +28,11 @@ class Window(QWidget, Ui_Form):
         self.setupUi(self)
 
         self.browser = QWebEngineView()
-        url="http://localhost:8080/"
-        self.browser.load(QUrl(url))
+#        url="http://localhost:8080/"
+#        self.browser.load(QUrl(url))
 #        self.browser.load(QUrl.fromLocalFile(
 #        os.path.abspath('data/map_vue.html')))        
+
 
         stop_chrome()
         run_chrome()
@@ -38,6 +40,7 @@ class Window(QWidget, Ui_Form):
         run_num=0
         result=self.start_chrome()
         while(result):
+            print("starting ......")
             stop_chrome()
             run_chrome()
             result=self.start_chrome() 
@@ -162,6 +165,7 @@ class Window(QWidget, Ui_Form):
             #stop_chrome()
             #run_chrome()
             print ("Error: process html error!")
+            print ("issue solved 1:  rmp info-Template.docx,Field Problem Feedback-Template.docx needed !!! " )
             return 1
 
         # stop the tab (stop handle events and stop recv message from chrome)
@@ -263,12 +267,12 @@ class Window(QWidget, Ui_Form):
         QMessageBox.information(self,"提示","操作成功")
          
     def generate_log(self):
-
         print("generate_log")
+        merge_file("./device-log/","merge-log.xlsx")
 
     def generate_event(self):
-
         print("generate_event")
+        merge_file("./device-event/","merge-event.xlsx")
 
     def genarate_summary(self):
 
