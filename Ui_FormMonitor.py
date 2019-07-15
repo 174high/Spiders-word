@@ -44,11 +44,23 @@ class Ui_Form(object):
         self.web.addTab(self.web1, "")
         self.summary = QtWidgets.QWidget()
         self.summary.setObjectName("summary")
+        self.process_log = QtWidgets.QPushButton(self.summary)
+        self.process_log.setGeometry(QtCore.QRect(30, 20, 131, 31))
+        self.process_log.setObjectName("process_log")
+        self.event_view = QtWidgets.QTableView(self.summary)
+        self.event_view.setGeometry(QtCore.QRect(190, 10, 421, 451))
+        self.event_view.setObjectName("event_view")
+        self.process_event = QtWidgets.QPushButton(self.summary)
+        self.process_event.setGeometry(QtCore.QRect(30, 70, 131, 31))
+        self.process_event.setObjectName("process_event")
+        self.event_summary = QtWidgets.QPushButton(self.summary)
+        self.event_summary.setGeometry(QtCore.QRect(30, 120, 131, 31))
+        self.event_summary.setObjectName("event_summary")
         self.web.addTab(self.summary, "")
         self.gridLayout.addWidget(self.web, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.web.setCurrentIndex(0)
+        self.web.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -67,9 +79,12 @@ class Ui_Form(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">only support 20 cubes</p></body></html>"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A-Ningbo Vanke Guanshanwang 20 units Core landing door</p></body></html>"))
         self.web.setTabText(self.web.indexOf(self.tab_Equipment), _translate("Form", "Equipment"))
         self.web.setTabText(self.web.indexOf(self.web1), _translate("Form", "web"))
+        self.process_log.setText(_translate("Form", "process  log"))
+        self.process_event.setText(_translate("Form", "process  event"))
+        self.event_summary.setText(_translate("Form", "event summary"))
         self.web.setTabText(self.web.indexOf(self.summary), _translate("Form", "summary"))
 
 import resources_rc

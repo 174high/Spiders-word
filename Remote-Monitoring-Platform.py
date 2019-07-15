@@ -47,7 +47,9 @@ class Window(QWidget, Ui_Form):
         self.gridLayout_5.addWidget(self.browser)
         self.pushButton_2.clicked.connect(self.watch_list)
         self.pushButton.clicked.connect(self.process_one_equipment)
-
+        self.process_log.clicked.connect(self.generate_log)
+        self.process_event.clicked.connect(self.generate_event)
+        self.event_summary.clicked.connect(self.genarate_summary)
 
     def start_chrome(self):
 
@@ -173,7 +175,7 @@ class Window(QWidget, Ui_Form):
 
     def watch_list(self):
         print("watch list")
-        equipments={"10000021","10000022","10000023","10000024"}
+        equipments={"54001574","54001575","54001576","54001577","54001580","54001581","54001582","54001583","54001586","54001587","54001660","54001661","54001662","54001663","54001664","54001665","54001666","54001667","54001668","54001675"}
         print(equipments)
 
         num = 10000
@@ -260,6 +262,18 @@ class Window(QWidget, Ui_Form):
         self.progress.setValue(num)
         QMessageBox.information(self,"提示","操作成功")
          
+    def generate_log(self):
+
+        print("generate_log")
+
+    def generate_event(self):
+
+        print("generate_event")
+
+    def genarate_summary(self):
+
+        print("genarate_summary")
+
 
 def signal_handler(signal,frame):
     print('You pressed Ctrl+C!')
