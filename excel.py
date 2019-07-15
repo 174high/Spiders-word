@@ -5,9 +5,9 @@ from openpyxl import Workbook
 
 wkbk = Workbook()
 
-#excelfiles = [r'10000021_MessagesExport_2019-07-09.xlsx', r'10000077_MessagesExport_2019-07-04.xlsx']
+excelfiles = [r'10000021_MessagesExport_2019-07-09.xlsx', r'10000077_MessagesExport_2019-07-04.xlsx']
 
-excelfiles = [r'10000021_MessagesExport_2019-07-09.xlsx']
+#excelfiles = [r'10000021_MessagesExport_2019-07-09.xlsx']
 
 
 for file in excelfiles:
