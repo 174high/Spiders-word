@@ -53,8 +53,8 @@ if __name__ == "__main__":
 #    run_chrome()    
 
 
-    while 1:
-        pass
+#    while 1:
+#        pass
 
 
 

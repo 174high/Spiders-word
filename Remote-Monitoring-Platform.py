@@ -1,5 +1,4 @@
-﻿
-from PyQt5.QtCore import pyqtSlot, QIODevice, QByteArray 
+﻿from PyQt5.QtCore import pyqtSlot, QIODevice, QByteArray 
 from PyQt5.QtSerialPort import QSerialPortInfo, QSerialPort
 from PyQt5.QtWidgets import QWidget, QMessageBox,QProgressDialog
 from PyQt5 import QtGui
@@ -16,11 +15,13 @@ import datetime
 import docx
 import signal
 import os
+import subprocess
+import _thread
 
 from change_paragraph import Word 
 from Ui_FormMonitor import Ui_Form 
 from run_chrome import stop_chrome,run_chrome
-from excel import merge_file
+#from excel import merge_file
 
 class Window(QWidget, Ui_Form):
 
@@ -268,13 +269,28 @@ class Window(QWidget, Ui_Form):
         self.progress.setValue(num)
         QMessageBox.information(self,"提示","操作成功")
          
+    def run_excel(self,cmd, delay):
+        subprocess.call("excel"+" "+cmd, shell=True)
+        print("test")
+
     def generate_log(self):
         print("generate_log")
-        merge_file("./device-log/","merge-log.xlsx")
+#        merge_file("./device-log/","merge-log.xlsx")
+        try:
+            _thread.start_new_thread(self.run_excel,("log", 4, ))
+        except:
+            print ("Error: can't run thread")   
+        print("continue ....")
 
     def generate_event(self):
         print("generate_event")
-        merge_file("./device-event/","merge-event.xlsx")
+#        merge_file("./device-event/","merge-event.xlsx")
+        try:
+            _thread.start_new_thread(self.run_excel,("event", 4, ))
+        except:
+            print ("Error: can't run thread")   
+        print("continue ....")
+
 
     def genarate_summary(self):
 
