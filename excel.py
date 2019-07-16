@@ -1,10 +1,12 @@
 import os 
-from openpyxl import load_workbook
-from openpyxl import Workbook
+#from openpyxl import load_workbook
+#from openpyxl import Workbook
 
 def merge_file(path,output_file):
-
+ 
     print(path)
+    print(output_file)
+    '''
     fileList=os.listdir(path)
     wkbk = Workbook()
 
@@ -22,7 +24,7 @@ def merge_file(path,output_file):
 
     wkbk.remove(wkbk.get_sheet_by_name("Sheet"))
     wkbk.save(output_file)
-
+    '''
 if __name__ == "__main__":
 
     merge_file("./device-log/","merge-log.xlsx")

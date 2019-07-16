@@ -62,8 +62,7 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         self.web.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
+    def retranslateUi(self, Form):       
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "RMP"))
         self.label_7.setText(_translate("Form", "Equipment #"))
@@ -86,5 +85,6 @@ class Ui_Form(object):
         self.process_event.setText(_translate("Form", "process  event"))
         self.event_summary.setText(_translate("Form", "event summary"))
         self.web.setTabText(self.web.indexOf(self.summary), _translate("Form", "summary"))
+
 
 import resources_rc

@@ -1,4 +1,5 @@
-﻿from PyQt5.QtCore import pyqtSlot, QIODevice, QByteArray 
+﻿
+from PyQt5.QtCore import pyqtSlot, QIODevice, QByteArray 
 from PyQt5.QtSerialPort import QSerialPortInfo, QSerialPort
 from PyQt5.QtWidgets import QWidget, QMessageBox,QProgressDialog
 from PyQt5 import QtGui
@@ -11,15 +12,15 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
-from change_paragraph import Word 
-from Ui_FormMonitor import Ui_Form 
-from run_chrome import stop_chrome,run_chrome
-from excel import merge_file
-
 import datetime
 import docx
 import signal
 import os
+
+from change_paragraph import Word 
+from Ui_FormMonitor import Ui_Form 
+from run_chrome import stop_chrome,run_chrome
+from excel import merge_file
 
 class Window(QWidget, Ui_Form):
 
@@ -27,13 +28,14 @@ class Window(QWidget, Ui_Form):
         super(Window, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
-        self.browser = QWebEngineView()
-#        url="http://localhost:8080/"
-#        self.browser.load(QUrl(url))
+        self.browser = QWebEngineView(self)
+        url="http://localhost:8080/"
+       
+#        url="https://www.baidu.com"
+        self.browser.load(QUrl(url))
 #        self.browser.load(QUrl.fromLocalFile(
-#        os.path.abspath('data/map_vue.html')))        
-
-
+#        os.path.abspath('data/javascript.html')))        
+        
         stop_chrome()
         run_chrome()
 
@@ -297,9 +299,6 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT,signal_handler)
     w.show()
     sys.exit(app.exec_())
-
-
-
 
 
 
