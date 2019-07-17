@@ -55,7 +55,8 @@ class Window(QWidget, Ui_Form):
         self.pushButton.clicked.connect(self.process_one_equipment)
         self.process_log.clicked.connect(self.generate_log)
         self.process_event.clicked.connect(self.generate_event)
-        self.event_summary.clicked.connect(self.genarate_summary)
+        self.event_summary.clicked.connect(self.genarate_event_summary)
+        self.log_summary.clicked.connect(self.genarate_log_summary)
 
     def start_chrome(self):
 
@@ -325,10 +326,57 @@ class Window(QWidget, Ui_Form):
         self.progress_1.setValue(10000)
         QMessageBox.information(self,"提示","程序正在后台运行,请耐心等待")
 
-    def genarate_summary(self):
+    def genarate_log_summary(self):
 
-        print("genarate_summary")
+        print("genarate log summary")
+        try:
+            _thread.start_new_thread(self.run_excel,("summary-log", 4, ))
+        except:
+            print ("Error: can't run thread")   
+        print("continue ....")
+        self.progress_1 = QProgressDialog(self)
+        self.progress_1.setWindowTitle("请稍等")  
+        self.progress_1.setLabelText("正在操作...")
+        self.progress_1.setCancelButtonText("取消")
+        self.progress_1.setMinimumDuration(5)
+        self.progress_1.setWindowModality(Qt.WindowModal)
+        self.progress_1.setRange(0,10000) 
+        self.progress_1.setValue(0)  
 
+        for i in range(0,10000):            
+            self.progress_1.setValue(i) 
+            if self.progress_1.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                return   
+         
+        self.progress_1.setValue(10000)
+        QMessageBox.information(self,"提示","程序正在后台运行,请耐心等待")
+
+    def genarate_event_summary(self):
+
+        print("genarate event summary")
+        try:
+            _thread.start_new_thread(self.run_excel,("summary-event", 4, ))
+        except:
+            print ("Error: can't run thread")   
+        print("continue ....")
+        self.progress_1 = QProgressDialog(self)
+        self.progress_1.setWindowTitle("请稍等")  
+        self.progress_1.setLabelText("正在操作...")
+        self.progress_1.setCancelButtonText("取消")
+        self.progress_1.setMinimumDuration(5)
+        self.progress_1.setWindowModality(Qt.WindowModal)
+        self.progress_1.setRange(0,10000) 
+        self.progress_1.setValue(0)  
+
+        for i in range(0,10000):            
+            self.progress_1.setValue(i) 
+            if self.progress_1.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                return   
+         
+        self.progress_1.setValue(10000)
+        QMessageBox.information(self,"提示","程序正在后台运行,请耐心等待")
 
 def signal_handler(signal,frame):
     print('You pressed Ctrl+C!')

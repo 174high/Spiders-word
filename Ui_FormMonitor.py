@@ -54,15 +54,19 @@ class Ui_Form(object):
         self.process_event.setGeometry(QtCore.QRect(30, 70, 131, 31))
         self.process_event.setObjectName("process_event")
         self.event_summary = QtWidgets.QPushButton(self.summary)
-        self.event_summary.setGeometry(QtCore.QRect(30, 120, 131, 31))
+        self.event_summary.setGeometry(QtCore.QRect(30, 170, 131, 31))
         self.event_summary.setObjectName("event_summary")
+        self.log_summary = QtWidgets.QPushButton(self.summary)
+        self.log_summary.setGeometry(QtCore.QRect(30, 120, 131, 31))
+        self.log_summary.setObjectName("log_summary")
         self.web.addTab(self.summary, "")
         self.gridLayout.addWidget(self.web, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
-        self.web.setCurrentIndex(2)
+        self.web.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
-    def retranslateUi(self, Form):       
+
+    def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "RMP"))
         self.label_7.setText(_translate("Form", "Equipment #"))
@@ -84,7 +88,7 @@ class Ui_Form(object):
         self.process_log.setText(_translate("Form", "process  log"))
         self.process_event.setText(_translate("Form", "process  event"))
         self.event_summary.setText(_translate("Form", "event summary"))
+        self.log_summary.setText(_translate("Form", "log summary"))
         self.web.setTabText(self.web.indexOf(self.summary), _translate("Form", "summary"))
-
 
 import resources_rc

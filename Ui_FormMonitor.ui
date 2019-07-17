@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="web">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_Equipment">
       <attribute name="title">
@@ -160,13 +160,26 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>120</y>
+         <y>170</y>
          <width>131</width>
          <height>31</height>
         </rect>
        </property>
        <property name="text">
         <string>event summary</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="log_summary">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>120</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>log summary</string>
        </property>
       </widget>
      </widget>
