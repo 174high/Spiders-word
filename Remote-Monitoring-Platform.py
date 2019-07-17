@@ -281,6 +281,23 @@ class Window(QWidget, Ui_Form):
         except:
             print ("Error: can't run thread")   
         print("continue ....")
+        self.progress_1 = QProgressDialog(self)
+        self.progress_1.setWindowTitle("请稍等")  
+        self.progress_1.setLabelText("正在操作...")
+        self.progress_1.setCancelButtonText("取消")
+        self.progress_1.setMinimumDuration(5)
+        self.progress_1.setWindowModality(Qt.WindowModal)
+        self.progress_1.setRange(0,10000) 
+        self.progress_1.setValue(0)  
+
+        for i in range(0,10000):            
+            self.progress_1.setValue(i) 
+            if self.progress_1.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                return   
+         
+        self.progress_1.setValue(10000)
+        QMessageBox.information(self,"提示","程序正在后台运行,请耐心等待")
 
     def generate_event(self):
         print("generate_event")
@@ -290,7 +307,23 @@ class Window(QWidget, Ui_Form):
         except:
             print ("Error: can't run thread")   
         print("continue ....")
+        self.progress_1 = QProgressDialog(self)
+        self.progress_1.setWindowTitle("请稍等")  
+        self.progress_1.setLabelText("正在操作...")
+        self.progress_1.setCancelButtonText("取消")
+        self.progress_1.setMinimumDuration(5)
+        self.progress_1.setWindowModality(Qt.WindowModal)
+        self.progress_1.setRange(0,10000) 
+        self.progress_1.setValue(0)  
 
+        for i in range(0,10000):            
+            self.progress_1.setValue(i) 
+            if self.progress_1.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                return   
+         
+        self.progress_1.setValue(10000)
+        QMessageBox.information(self,"提示","程序正在后台运行,请耐心等待")
 
     def genarate_summary(self):
 

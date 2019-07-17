@@ -77,7 +77,9 @@ pyinstaller --noconsole  --ico="name .ico"  Remote-Monitoring-Platform.py  // cr
 
 npm run serve
 
+5. run  build-project.py to build our project completely
 
+python build-project.py 
 
 
 
