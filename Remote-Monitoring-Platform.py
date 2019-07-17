@@ -80,7 +80,7 @@ class Window(QWidget, Ui_Form):
             self.progress.setValue(i) 
             if self.progress.wasCanceled():
                 QMessageBox.warning(self,"提示","操作失败") 
-                break
+                return 2
 
         try:
             # call method with timeout
@@ -104,7 +104,7 @@ class Window(QWidget, Ui_Form):
             #print(type((soup.select("#ProductLineDesc"))[0]['value']))
             #print(soup.title)	
 
-            doc = docx.Document('Field Problem Feedback-Template.docx')
+            doc = docx.Document('./device-file/'+'Field Problem Feedback-Template.docx')
 
             data="Originator: "
             doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,"JOHNNY")
@@ -134,9 +134,9 @@ class Window(QWidget, Ui_Form):
 
 #           doc=Word.input_table_data(doc,"Machine Type",(soup.select("#Machine type"))[0]['value'],4)
 
-            doc.save('Feedback-'+equipment+'.docx')
+            doc.save("./result/"+'Feedback-'+equipment+'.docx')
 
-            doc = docx.Document('rmp info-Template.docx')
+            doc = docx.Document('./device-file/'+'rmp info-Template.docx')
             doc=Word.input_table_data(doc,"Equipment #",(soup.select("#Equnr"))[0]['value'],4) 
             doc=Word.input_table_data(doc,"Product Line",(soup.select("#ProductLineDesc"))[0]['value'],4)
             doc=Word.input_table_data(doc,"Address",(soup.select("#Address"))[0]['value'],4)
@@ -162,7 +162,7 @@ class Window(QWidget, Ui_Form):
             doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             data="Phone/Mail:"
             doc.paragraphs[0]=Word.input_data(doc.paragraphs[0],data,(soup.select("#TaPhoneNumber"))[0]['value'])
-            doc.save("rmp info-result-"+equipment+".docx")
+            doc.save("./result/"+"rmp info-result-"+equipment+".docx")
 
             print("address=",(soup.select("#CityAndZip"))[0]['value'],(soup.select("#Address"))[0]['value'])
         except:
@@ -200,7 +200,7 @@ class Window(QWidget, Ui_Form):
             self.progress.setValue(i) 
             if self.progress.wasCanceled():
                 QMessageBox.warning(self,"提示","操作失败") 
-                return 
+                return 0
 
         progress_bar=1000
                      
@@ -208,26 +208,32 @@ class Window(QWidget, Ui_Form):
         
             result=self.call_web(equipment,progress_bar,progress_bar+400)
             print("result:",result) 
-
+            if result == 2:
+                return 0
             progress_bar=progress_bar+400
             run_num=0
             while result  :
                 result=self.call_web(equipment,progress_bar,progress_bar)
                 print("result:",result) 
+                if result == 2:
+                    return 0
                 run_num=run_num+1
                 if run_num > 10:
                     QMessageBox.warning(self,"提示","操作失败,请重启软件") 
-                    return 
+                    return 0
+
+            if self.progress.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                return 0
 
         for i in range(9000,num):            
             self.progress.setValue(i) 
             if self.progress.wasCanceled():
                 QMessageBox.warning(self,"提示","操作失败") 
-                return 
+                return 0
 
         self.progress.setValue(num)
         QMessageBox.information(self,"提示","操作成功")
-
 
     def process_one_equipment(self):
         equipment = self.textEdit.toPlainText()
@@ -251,11 +257,14 @@ class Window(QWidget, Ui_Form):
 
         result=self.call_web(equipment,3000,4000)
         print("result:",result) 
-
+        if result == 2:
+            return 0
         run_num=0
         while result  :
             result=self.call_web(equipment,4000,4000)
             print("result:",result) 
+            if result == 2:
+                return 
             run_num=run_num+1
             if run_num > 10:
                QMessageBox.warning(self,"提示","操作失败,请重启软件") 
