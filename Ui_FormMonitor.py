@@ -59,6 +59,9 @@ class Ui_Form(object):
         self.log_summary = QtWidgets.QPushButton(self.summary)
         self.log_summary.setGeometry(QtCore.QRect(30, 120, 131, 31))
         self.log_summary.setObjectName("log_summary")
+        self.download_excel = QtWidgets.QPushButton(self.summary)
+        self.download_excel.setGeometry(QtCore.QRect(30, 220, 131, 31))
+        self.download_excel.setObjectName("download_excel")
         self.web.addTab(self.summary, "")
         self.gridLayout.addWidget(self.web, 0, 0, 1, 1)
 
@@ -89,6 +92,7 @@ class Ui_Form(object):
         self.process_event.setText(_translate("Form", "process  event"))
         self.event_summary.setText(_translate("Form", "event summary"))
         self.log_summary.setText(_translate("Form", "log summary"))
+        self.download_excel.setText(_translate("Form", "download_excel"))
         self.web.setTabText(self.web.indexOf(self.summary), _translate("Form", "summary"))
 
 import resources_rc

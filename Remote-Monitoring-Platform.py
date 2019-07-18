@@ -17,11 +17,13 @@ import signal
 import os
 import subprocess
 import _thread
+import shutil
 
 from change_paragraph import Word 
 from Ui_FormMonitor import Ui_Form 
 from run_chrome import stop_chrome,run_chrome
 #from excel import merge_file
+from PythonHeadlessChrome.download import RMPDownload
 
 class Window(QWidget, Ui_Form):
 
@@ -32,6 +34,7 @@ class Window(QWidget, Ui_Form):
         self.browser = QWebEngineView(self)
         url="http://localhost:8080/"
        
+        self.equipments={"54001574","54001575","54001576","54001577","54001580","54001581","54001582","54001583","54001586","54001587","54001660","54001661","54001662","54001663","54001664","54001665","54001666","54001667","54001668","54001675"}
 #        url="https://www.baidu.com"
         self.browser.load(QUrl(url))
 #        self.browser.load(QUrl.fromLocalFile(
@@ -57,6 +60,7 @@ class Window(QWidget, Ui_Form):
         self.process_event.clicked.connect(self.generate_event)
         self.event_summary.clicked.connect(self.genarate_event_summary)
         self.log_summary.clicked.connect(self.genarate_log_summary)
+        self.download_excel.clicked.connect(self.rmp_download_excel)
 
     def start_chrome(self):
 
@@ -183,7 +187,7 @@ class Window(QWidget, Ui_Form):
 
     def watch_list(self):
         print("watch list")
-        equipments={"54001574","54001575","54001576","54001577","54001580","54001581","54001582","54001583","54001586","54001587","54001660","54001661","54001662","54001663","54001664","54001665","54001666","54001667","54001668","54001675"}
+  
         print(equipments)
 
         num = 10000
@@ -204,7 +208,7 @@ class Window(QWidget, Ui_Form):
 
         progress_bar=1000
                      
-        for equipment in equipments:
+        for equipment in self.equipments:
         
             result=self.call_web(equipment,progress_bar,progress_bar+400)
             print("result:",result) 
@@ -362,10 +366,50 @@ class Window(QWidget, Ui_Form):
         QMessageBox.information(self,"提示","程序正在后台运行,请耐心等待")
 
     def genarate_event_summary(self):
-
         print("genarate event summary")
         try:
             _thread.start_new_thread(self.run_excel,("summary-event", 4, ))
+        except:
+            print ("Error: can't run thread")   
+        print("continue ....")
+        self.progress_1 = QProgressDialog(self)
+        self.progress_1.setWindowTitle("请稍等")  
+        self.progress_1.setLabelText("正在操作...")
+        self.progress_1.setCancelButtonText("取消")
+        self.progress_1.setMinimumDuration(5)
+        self.progress_1.setWindowModality(Qt.WindowModal)
+        self.progress_1.setRange(0,10000) 
+        self.progress_1.setValue(0)  
+
+        for i in range(0,10000):            
+            self.progress_1.setValue(i) 
+            if self.progress_1.wasCanceled():
+                QMessageBox.warning(self,"提示","操作失败") 
+                return   
+         
+        self.progress_1.setValue(10000)
+        QMessageBox.information(self,"提示","程序正在后台运行,请耐心等待")
+
+    def run_download(self,cmd, delay):
+    #    self.equipments
+        for equipment in self.equipments:
+            dirname, filename = os.path.split(os.path.abspath(__file__)) 
+            print("dir=",dirname)
+            t=RMPDownload(dirname+"/")
+            t.download_by_quip(equipment)
+
+            fileList=os.listdir(dirname)
+            for file in fileList:
+               print("file name=",file)
+               if file.find("EventsExport") >=0 :
+                   shutil.move(file,"./device-event/")
+               elif file.find("MessagesExport") >=0 :
+                   shutil.move(file,"./device-log/")
+
+    def rmp_download_excel(self):
+
+        try:
+            _thread.start_new_thread(self.run_download,("log", 4, ))
         except:
             print ("Error: can't run thread")   
         print("continue ....")

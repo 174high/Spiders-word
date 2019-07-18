@@ -182,6 +182,19 @@ p, li { white-space: pre-wrap; }
         <string>log summary</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="download_excel">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>220</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>download_excel</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>
