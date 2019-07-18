@@ -3,7 +3,7 @@ import sys
 
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome import webdriver as chrome_webdriver
-
+from time import sleep
 
 class DriverBuilder():
     def get_driver(self, download_location=None, headless=False):
@@ -16,6 +16,7 @@ class DriverBuilder():
 
     def _get_chrome_driver(self, download_location, headless):
         chrome_options = chrome_webdriver.Options()
+
         if download_location:
             prefs = {'download.default_directory': download_location,
                      'download.prompt_for_download': False,
@@ -36,6 +37,13 @@ class DriverBuilder():
 
         driver = Chrome(executable_path=driver_path, chrome_options=chrome_options)
 
+#        driver.get("http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr=10000021") 
+
+#       print("title of baidu=",driver.title)
+ 
+#       print("url =",driver.current_url)
+
+ 
         if headless:
             self.enable_download_in_headless_chrome(driver, download_location)
 

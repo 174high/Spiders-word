@@ -1,21 +1,22 @@
 from os import path, remove
 from time import sleep
+import os
 
 from driver_builder import DriverBuilder
 
+from selenium import webdriver  
+from selenium.webdriver.chrome import webdriver as chrome_webdriver
+from selenium.webdriver import Chrome
 
 class TestDownload:
     def test_download(self):
 
         driver_builder = DriverBuilder()
-
         download_path = path.dirname(path.realpath(__file__))
-
-        print("download path=",download_path )
-
         expected_download = path.join(download_path, "5MB.zip")
 
-        print("expected_download=",expected_download )
+        print("download_path=",download_path)
+        print("expected_download=",expected_download)
 
         # clean downloaded file
         try:
@@ -27,21 +28,30 @@ class TestDownload:
 
         driver = driver_builder.get_driver(download_path, headless=True)
 
-        driver.get("https://www.thinkbroadband.com/download")
+        driver.get("http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr=10000021") 
 
-#        driver.get("http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr=10000021")
+        print("title of baidu=",driver.title)
+ 
+        print("url =",driver.current_url)
 
-#        driver.get("https://hamupp.github.io/gitblog/app/jsBasic/jsButtonDownloadFile/index.html")
+        try :
+            js = ''' document.querySelectorAll("li")[36].click();
 
-        clone_box = driver.find_element_by_xpath('//*[@id="main-col"]/div/div/div[8]/p[1]/a/img')
-#        clone_box =driver.find_element_by_id('#ExportWithParameters1')
+              
+            '''
+            driver.execute_script(js)
+        except: 
+            print("exception")
 
-#        clone_box =driver.find_element_by_id('btn1')
+        sleep(5)  
+ 
+        try :
+            js = ''' document.getElementById('ExportWithParameters1').click(); '''
+            driver.execute_script(js)
+        except:
+            print("exception")
 
-#        clone_box =driver.find_element_by_partial_link_text('chromedriver')
-        clone_box.click()
-
-        self.wait_until_file_exists(expected_download, 30)
+        self.wait_until_file_exists(expected_download, 600)
         driver.close()
 
         assert (path.isfile(expected_download))
@@ -55,10 +65,9 @@ class TestDownload:
             sleep(.5)  # make sure file completes downloading
             waits += .5
 
-print("testing download")
-t=TestDownload()
-t.test_download()
 
-
-
-
+if __name__ == "__main__":
+ 
+    print("testing download")
+    t=TestDownload()
+    t.test_download()
