@@ -20,7 +20,7 @@ class RMPDownload:
 
         print("download_path=",download_path)
 
-        driver = driver_builder.get_driver(download_path, headless=False)
+        driver = driver_builder.get_driver(download_path, headless=True)
 
         driver.get("http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr="+equipment) 
 
