@@ -23,7 +23,7 @@ from change_paragraph import Word
 from Ui_FormMonitor import Ui_Form 
 from run_chrome import stop_chrome,run_chrome
 #from excel import merge_file
-from PythonHeadlessChrome.download import RMPDownload
+from  download import RMPDownload
 
 class Window(QWidget, Ui_Form):
 
@@ -188,7 +188,7 @@ class Window(QWidget, Ui_Form):
     def watch_list(self):
         print("watch list")
   
-        print(equipments)
+        print(self.equipments)
 
         num = 10000
         self.progress = QProgressDialog(self)
@@ -395,7 +395,7 @@ class Window(QWidget, Ui_Form):
         for equipment in self.equipments:
             dirname, filename = os.path.split(os.path.abspath(__file__)) 
             print("dir=",dirname)
-            t=RMPDownload(dirname+"/")
+            t=RMPDownload(dirname+"\\")
             t.download_by_quip(equipment)
 
             fileList=os.listdir(dirname)

@@ -28,11 +28,11 @@ def stop_chrome():
             i=i+4
             print("i=",i)
             if i<len(res):
-                if (res[i] ==0) or (not res[i].isnumeric()) :
-                    break;
-                subprocess.check_output(["taskkill","/pid",res[i],"/f"], shell=True)    
+                if( res[i].isnumeric() & (res[i] !=0 ) ):
+                    subprocess.check_output(["taskkill","/pid",res[i],"/f"], shell=True)    
             else:
                 break 
+            i=i+1
 
 def run_cmd( threadName, delay):
 
