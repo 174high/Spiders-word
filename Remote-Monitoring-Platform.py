@@ -392,19 +392,43 @@ class Window(QWidget, Ui_Form):
 
     def run_download(self,cmd, delay):
     #    self.equipments
-        for equipment in self.equipments:
-            dirname, filename = os.path.split(os.path.abspath(__file__)) 
-            print("dir=",dirname)
-            t=RMPDownload(dirname+"\\")
-            t.download_by_quip(equipment)
+        dirname, filename = os.path.split(os.path.abspath(__file__)) 
+        print("dir=",dirname)
 
-            fileList=os.listdir(dirname)
+        fileList=os.listdir("./device-event/")
+        for file in fileList:
+            os.remove("./device-event/"+file)
+
+        fileList=os.listdir("./device-log/")
+        for file in fileList:
+            os.remove("./device-log/"+file)
+
+        for equipment in self.equipments:
+            self.single_one(dirname,equipment)
+              
+        for equipment in self.equipments:
+            fileList=os.listdir("./device-log/")
             for file in fileList:
-               print("file name=",file)
-               if file.find("EventsExport") >=0 :
-                   shutil.move(file,"./device-event/")
-               elif file.find("MessagesExport") >=0 :
-                   shutil.move(file,"./device-log/")
+                if file.find(equipment) < 0 :
+                    self.single_one(dirname,equipment)
+
+            fileList=os.listdir("./device-even/")
+            for file in fileList:
+                if file.find(equipment) < 0 :
+                    self.single_one(dirname,equipment)
+
+    def single_one(self,dirname,equipment):    
+
+         t=RMPDownload(dirname+"\\")
+         t.download_by_quip(equipment)
+
+         fileList=os.listdir(dirname)
+         for file in fileList:
+             print("file name=",file)
+             if file.find("EventsExport") >=0 :
+                 shutil.move(file,"./device-event/")
+             elif file.find("MessagesExport") >=0 :
+                 shutil.move(file,"./device-log/")  
 
     def rmp_download_excel(self):
 

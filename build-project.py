@@ -2,9 +2,9 @@ import subprocess
 
 
 subprocess.call("python run_chrome.py", shell=True)
-subprocess.call('''pyinstaller --noconsole   --ico="name .ico"  Remote-Monitoring-Platform.py''', shell=True)
-#subprocess.call('''pyinstaller --ico="name .ico"  Remote-Monitoring-Platform.py''', shell=True)
-subprocess.call("pyinstaller --noconsole   excel.py", shell=True)
+subprocess.call('''pyinstaller  --noconsole   --ico="name .ico"  Remote-Monitoring-Platform.py''', shell=True)
+#subprocess.call('''pyinstaller --noconsole   --ico="name .ico"  Remote-Monitoring-Platform.py''', shell=True)
+subprocess.call("pyinstaller  --noconsole    excel.py", shell=True)
 #subprocess.call("pyinstaller excel.py", shell=True)
 
 subprocess.call("cp -r  device-log dist/Remote-Monitoring-Platform/", shell=True)

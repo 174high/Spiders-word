@@ -12,24 +12,21 @@ from selenium.webdriver import Chrome
 class RMPDownload:
     def __init__(self,path):
         self.path_root=path
+        self.driver_builder = DriverBuilder()
+        download_path = self.path_root
+        print("download_path=",download_path)
+        self.driver = self.driver_builder.get_driver(download_path, headless=True)
 
     def download(self,equipment):
 
-        driver_builder = DriverBuilder()
-        download_path = self.path_root
-
-        print("download_path=",download_path)
-
-        driver = driver_builder.get_driver(download_path, headless=True)
-
-        driver.get("http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr="+equipment) 
+        self.driver.get("http://rmp.global.schindler.com/Equipment/EquipmentMain/EquipmentDetails/?sapSys=ZAP&equnr="+equipment) 
 
         try :
             js = ''' document.querySelectorAll("li")[35].click();
 
                 
             '''
-            driver.execute_script(js)
+            self.driver.execute_script(js)
         except: 
             print("exception 1 ")
 
@@ -37,7 +34,7 @@ class RMPDownload:
  
         try :
             js = ''' document.getElementById('ExportWithParameters1').click(); '''
-            driver.execute_script(js)
+            self.driver.execute_script(js)
         except:
             print("exception 2 ")
 
@@ -47,7 +44,7 @@ class RMPDownload:
             js = ''' document.querySelectorAll("li")[34].click();
 
  '''
-            driver.execute_script(js)
+            self.driver.execute_script(js)
         except: 
             print("exception 3 ")
 
@@ -55,12 +52,12 @@ class RMPDownload:
  
         try :
             js = ''' document.getElementById('EventExportButton').click(); '''
-            driver.execute_script(js)
+            self.driver.execute_script(js)
         except:
             print("exception 4 ")
 
         self.wait_until_file_exists(equipment+"_EventsExport_", 20)
-        driver.close()
+        self.driver.close()
 
         print("done")
 
